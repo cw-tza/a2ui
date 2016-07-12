@@ -2,7 +2,7 @@
 ## Free usage
 Free for non-commercial use, free for non-profit organizations.
 
-Free to use for small companies (up to 5 employ0ees).
+Free to use for small companies (up to 5 employees).
 
 # Paid usage
 Paid for big companies (more than 5 employees).
