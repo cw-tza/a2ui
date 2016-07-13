@@ -6,14 +6,10 @@ import * as ng from "@angular/core";
     selector: "[a2Watch]",
 })
 export class WatchDirective {
+    onChange: ng.EventEmitter<any> = new ng.EventEmitter<any>();
     private previousValue: any;
     private lastUpdateTime: Date;
     private first: boolean = true;
-    onChange: ng.EventEmitter<any> = new ng.EventEmitter<any>();
-
-    constructor() {
-        console.log("Hello");
-    }
 
     set watch (value: any) {
         if (this.first) {
@@ -23,7 +19,7 @@ export class WatchDirective {
             return;
         }
 
-        this.onChange.emit({old: this.previousValue, lastUpdateTime: this.lastUpdateTime});
+        this.onChange.emit({lastUpdateTime: this.lastUpdateTime, old: this.previousValue});
         this.lastUpdateTime = new Date();
         this.previousValue = value;
     }
