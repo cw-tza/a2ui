@@ -1,1 +1,21 @@
-<span>Hello</span>
+<h1>On Init</h1>
+<span (a2OnInit)="onInit = 'set by onInit'">{{onInit}}</span>
+<hr>
+
+<h1>Copy & cut</h1>
+
+<input value="Copy me!" #copyRef>
+<button (click)="copyResult = copy(copyRef)">Copy</button>
+<button *ngIf="copyResult && copyResult.success" (click)="copyResult.clearSelection()">Clear selecton</button> <br>
+<span>copyResult: {{copyResult | json}}</span> <br>
+
+<input value="Cut me!" #cutRef>
+<button (click)="cutResult = cut(cutRef)">Cut</button> <br>
+<span>cutResult: {{cutResult | json}}</span> <br>
+
+<button (click)="copyTextResult = copy('Some text')">Copy some text</button> <br>
+<span>copyTextResult: {{copyTextResult | json}}</span> <br>
+
+<h1>Watcher</h1>
+<input [(ngModel)]="wachData" value="Write here" [a2Watch]="wachData" (a2Change)="changeEvent = $event"> <br>
+changeEvent: {{changeEvent | json}}
