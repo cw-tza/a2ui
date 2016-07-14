@@ -1,26 +1,28 @@
 import * as ng from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
-import {share} from "rxjs/operator/share";
+import "rxjs/add/operator/share";
+import "rxjs/add/operator/cache";
 
 @ng.Injectable()
 export class Modal {
     constructor (private injector: ng.Injector, private componentResolver: ng.ComponentResolver) {}
 
-    show (component: ng.Type|string, modalParentSelector: string = "[a2modalHolder]", providers?: Array<ng.Type | any[] | any>): Observable<any> {
+    show (component: ng.Type|string, providers: Array<ng.Type | any[] | any> = [], modalParentSelector: string = "[a2modalHolder]"): Observable<any> {
         let o: Observable<any> = new Observable<any>((sub: Subscriber<any>) => {
-            if (!providers) {
-                providers = [];
-            }
             let modalActions: ModalActions = new ModalActions(sub);
             providers.push({provide: ModalActions, useValue: modalActions});
 
             this.createComponent(component, providers)
                 .then((componentRef: ng.ComponentRef<any>) => {
                     let modalParent: Element = document.querySelector(modalParentSelector);
-
+                    if (modalParent === undefined || modalParent === null) {
+                        sub.error("Can not find parent for modal using query: " + modalParentSelector);
+                        return;
+                    }
                     modalParent.appendChild(componentRef.location.nativeElement);
 
+                    // tslint:disable-next-line
                     let popup: any = (<any>window["$"](componentRef.location.nativeElement));
                     let popupModal: any = popup.modal();
 
@@ -29,7 +31,7 @@ export class Modal {
                     let destroy: () => void = () => {
                         if (!destroyed) {
                             destroyed = true;
-                            popupModal.modal("hide").data("bs.modal", null);
+                            popupModal.modal("hide").data("bs.modal", undefined);
                             componentRef.destroy();
                         }
                     };
@@ -45,7 +47,7 @@ export class Modal {
 
     private createComponent (component: ng.Type|string, providers: Array<ng.Type | any[] | any>): Promise<ng.ComponentRef<any>> {
         return this.componentResolver.resolveComponent(component)
-            .then((componentFactory: ng.ComponentFactory) => {
+            .then((componentFactory: ng.ComponentFactory<any>) => {
                 let injector: ng.ReflectiveInjector = ng.ReflectiveInjector.fromResolvedProviders(
                     ng.ReflectiveInjector.resolve(providers), this.injector);
                 return componentFactory.create(injector);

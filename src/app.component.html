@@ -19,3 +19,6 @@
 <h1>Watcher</h1>
 <input [(ngModel)]="wachData" value="Write here" [a2Watch]="wachData" (a2Change)="changeEvent = $event"> <br>
 changeEvent: {{changeEvent | json}}
+
+<h1>Modal</h1>
+<button (click)="showModal();">Show modal</button>

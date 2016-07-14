@@ -5,32 +5,33 @@ export interface ClipboardResult {
     text?: string;
 }
 
-export function copy (contentHolder: HTMLElement | string, clearTimeout: number = -1): ClipboardResult {
-    return executeAction(contentHolder, "copy");
+export function copy (source: HTMLElement | string, clearTimeout: number = -1): ClipboardResult {
+    return executeAction(source, "copy");
 }
 
-export function cut (contentHolder: HTMLElement | string, clearTimeout: number = -1): ClipboardResult {
-    return executeAction(contentHolder, "cut");
+export function cut (source: HTMLElement | string, clearTimeout: number = -1): ClipboardResult {
+    return executeAction(source, "cut");
 }
 
-function executeAction (contentHolder: HTMLElement | string, action: "copy"|"cut"): ClipboardResult {
-    let element: HTMLElement = <HTMLElement>contentHolder;
-    if (typeof contentHolder === "string") {
-        element = createInvisibleTextInput(contentHolder);
+function executeAction (source: HTMLElement | string, action: "copy"|"cut"): ClipboardResult {
+    let element: HTMLElement = <HTMLElement>source;
+    if (typeof source === "string") {
+        element = createInvisibleTextInput(source);
     }
 
     const selectedText: string = select(element);
     const result: boolean = execCommand(action);
+    const clear: () => void = () => { clearSelection(element); };
     if (result === true) {
         return {
-            clearSelection: () => { clearSelection(element); },
-            success       : true,
-            text          : selectedText
+            clearSelection: clear,
+            success: true,
+            text: selectedText
         };
     }
     return {
-        clearSelection: () => { clearSelection(element); },
-        error         : result || true, text: selectedText
+        clearSelection: clear,
+        error: result || true, text: selectedText
     };
 }
 
