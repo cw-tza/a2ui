@@ -4,6 +4,8 @@ import {Subscriber} from "rxjs/Subscriber";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/cache";
 
+type ModalBackdrop = "static" & boolean;
+
 @ng.Injectable()
 export class Modal {
     constructor (private injector: ng.Injector, private componentResolver: ng.ComponentResolver) {}
@@ -16,6 +18,7 @@ export class Modal {
             this.createComponent(component, providers)
                 .then((componentRef: ng.ComponentRef<any>) => {
                     let modalParent: Element = document.querySelector(modalParentSelector);
+                    // tslint:disable-next-line
                     if (modalParent === undefined || modalParent === null) {
                         sub.error("Can not find parent for modal using query: " + modalParentSelector);
                         return;
@@ -23,7 +26,7 @@ export class Modal {
                     modalParent.appendChild(componentRef.location.nativeElement);
 
                     // tslint:disable-next-line
-                    let popup: any = (<any>window["$"](componentRef.location.nativeElement));
+                    let popup: any = (<any>window["$"](componentRef.location.nativeElement.childNodes[0]));
                     let popupModal: any = popup.modal();
 
                     let destroyed: boolean = false;
@@ -53,6 +56,19 @@ export class Modal {
                 return componentFactory.create(injector);
             });
     };
+}
+
+
+export interface ModalOptions {
+    component: ng.Type|string;
+    providers: Array<ng.Type | any[] | any>;
+    modalParentSelector: string;
+    backdrop: ModalBackdrop;
+}
+
+
+export class ModalInstance {
+
 }
 
 export class ModalActions {

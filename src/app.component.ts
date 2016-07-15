@@ -17,6 +17,7 @@ class AppComponent {
     cut: (source: HTMLElement | string) => cb.ClipboardResult = cb.cut;
     modalSuccessResult: any;
     modalSuccessError: any;
+    modalDone: any;
 
     constructor (private modal: Modal) {}
 
@@ -26,6 +27,8 @@ class AppComponent {
                 this.modalSuccessResult = result;
             }, (error: any) => {
                 this.modalSuccessError = error;
+            }, () => {
+                this.modalDone = "Modal is done with us";
             });
     }
 }

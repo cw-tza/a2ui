@@ -21,4 +21,8 @@
 changeEvent: {{changeEvent | json}}
 
 <h1>Modal</h1>
-<button (click)="showModal();">Show modal</button>
+<div a2modalHolder></div>
+<button (click)="showModal();">Show modal</button> <br>
+<span>modalSuccessResult: {{modalSuccessResult | json}}</span> <br>
+<span>modalSuccessError: {{modalSuccessError | json}}</span> <br>
+<span>modalDone: {{modalDone | json}}</span> <br>
