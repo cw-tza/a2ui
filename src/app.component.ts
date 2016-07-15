@@ -1,16 +1,15 @@
 import * as ng from "@angular/core";
 import {bootstrap} from "@angular/platform-browser-dynamic";
-
 import {OnInitDirective} from "./on-init/on-init.directive";
 import * as cb from "./clipboard/clipbard";
 import {WatchDirective} from "./watch/watch.directive";
-import {Modal} from "./bootstrap/modal/modal";
+import {Modal, ModalInstance} from "./bootstrap/modal/modal";
 import {MyModalComponent, MY_MODAL_DEPENDENCY} from "./examples/MyModal.component";
 
 @ng.Component({
-    selector: "a2ui-app",
+    selector   : "a2ui-app",
     templateUrl: "src/app.component.html",
-    providers: [Modal]
+    providers  : [Modal]
 })
 class AppComponent {
     copy: (source: HTMLElement | string) => cb.ClipboardResult = cb.copy;
@@ -22,14 +21,21 @@ class AppComponent {
     constructor (private modal: Modal) {}
 
     showModal (): void {
-        this.modal.show(MyModalComponent, [{provide: MY_MODAL_DEPENDENCY, useValue: 42}])
-            .subscribe((result: any) => {
+        // noinspection TypeScriptValidateTypes
+        this.modal.create({
+            component: MyModalComponent,
+            providers: [{provide: MY_MODAL_DEPENDENCY, useValue: 42}]
+        }).subscribe((instance: ModalInstance) => {
+            instance.result.subscribe((result: any) => {
                 this.modalSuccessResult = result;
             }, (error: any) => {
                 this.modalSuccessError = error;
             }, () => {
                 this.modalDone = "Modal is done with us";
             });
+        }, (error: any) => {
+            this.modalSuccessError = error;
+        });
     }
 }
 

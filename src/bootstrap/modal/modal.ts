@@ -1,51 +1,60 @@
 import * as ng from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Subscriber} from "rxjs/Subscriber";
+import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/cache";
 
-type ModalBackdrop = "static" & boolean;
+type ModalBackdrop = "static" | boolean;
 
 @ng.Injectable()
 export class Modal {
     constructor (private injector: ng.Injector, private componentResolver: ng.ComponentResolver) {}
 
-    show (component: ng.Type|string, providers: Array<ng.Type | any[] | any> = [], modalParentSelector: string = "[a2modalHolder]"): Observable<any> {
-        let o: Observable<any> = new Observable<any>((sub: Subscriber<any>) => {
-            let modalActions: ModalActions = new ModalActions(sub);
-            providers.push({provide: ModalActions, useValue: modalActions});
+    create ({component, providers = [], modalParentSelector = "[a2modalHolder]", keyboard = true, show = true, backdrop = true}: ModalOptions): Observable<ModalInstance> {
+        const instanceSubject: Subject<ModalInstance> = new Subject<ModalInstance>();
+        const resultSubject: Subject<ModalInstance> = new Subject<ModalInstance>();
 
-            this.createComponent(component, providers)
-                .then((componentRef: ng.ComponentRef<any>) => {
-                    let modalParent: Element = document.querySelector(modalParentSelector);
-                    // tslint:disable-next-line
-                    if (modalParent === undefined || modalParent === null) {
-                        sub.error("Can not find parent for modal using query: " + modalParentSelector);
-                        return;
-                    }
-                    modalParent.appendChild(componentRef.location.nativeElement);
+        let modalActions: ModalActions = new ModalActions(resultSubject);
+        providers.push({provide: ModalActions, useValue: modalActions});
 
-                    // tslint:disable-next-line
-                    let popup: any = (<any>window["$"](componentRef.location.nativeElement.childNodes[0]));
-                    let popupModal: any = popup.modal();
+        this.createComponent(component, providers).then((componentRef: ng.ComponentRef<any>) => {
+            let modalParent: Element = document.querySelector(modalParentSelector);
 
-                    let destroyed: boolean = false;
+            // tslint:disable-next-line
+            if (modalParent === undefined || modalParent === null) {
+                instanceSubject.error("Can not find parent for modal using query: " + modalParentSelector);
+                return;
+            }
 
-                    let destroy: () => void = () => {
-                        if (!destroyed) {
-                            destroyed = true;
-                            popupModal.modal("hide").data("bs.modal", undefined);
-                            componentRef.destroy();
-                        }
-                    };
+            modalParent.appendChild(componentRef.location.nativeElement);
 
-                    popupModal.on("hidden.bs.modal", destroy);
+            // tslint:disable-next-line
+            let popup: any = (<any>window["$"](componentRef.location.nativeElement.childNodes[0]));
+            let popupModal: any = popup.modal({keyboard, show, backdrop});
 
-                    o.subscribe(destroy, destroy, destroy);
-                });
 
-        }).share().cache(1);
-        return o;
+            let destroy: () => void = () => {
+                if (!modalActions.destroyed) {
+                    popupModal.modal("hide").data("bs.modal", undefined);
+                    componentRef.destroy();
+                    modalActions.close(undefined);
+                }
+            };
+
+            popupModal.on("hidden.bs.modal", destroy);
+
+            resultSubject.subscribe(destroy, destroy, destroy);
+
+            instanceSubject.next({
+                jqueryElement: popupModal,
+                result       : resultSubject,
+                discard      : modalActions.discard,
+                close        : modalActions.close,
+                error        : modalActions.error
+            });
+        });
+
+        return instanceSubject;
     }
 
     private createComponent (component: ng.Type|string, providers: Array<ng.Type | any[] | any>): Promise<ng.ComponentRef<any>> {
@@ -58,32 +67,39 @@ export class Modal {
     };
 }
 
-
 export interface ModalOptions {
     component: ng.Type|string;
-    providers: Array<ng.Type | any[] | any>;
-    modalParentSelector: string;
-    backdrop: ModalBackdrop;
+    providers?: Array<ng.Type | any[] | any>;
+    modalParentSelector?: string;
+    backdrop?: ModalBackdrop;
+    show?: boolean;
+    keyboard?: boolean;
 }
 
-
-export class ModalInstance {
-
+export interface ModalInstance {
+    jqueryElement: any;
+    result: Observable<any>;
+    discard (): void;
+    close (val: any): void;
+    error (val: any): void;
 }
 
 export class ModalActions {
-    constructor (private sub: Subscriber<any>) {}
+    constructor (private sub: Subject<any>, public destroyed: boolean = false) {}
 
     discard (): void {
+        this.destroyed = true;
         this.sub.complete();
     };
 
     close (val: any): void {
+        this.destroyed = true;
         this.sub.next(val);
         this.sub.complete();
     };
 
     error (val: any): void {
+        this.destroyed = true;
         this.sub.error(val);
     }
 }
