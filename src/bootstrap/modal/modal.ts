@@ -35,22 +35,29 @@ export class Modal {
 
             let destroy: () => void = () => {
                 if (!modalActions.destroyed) {
+                    modalActions.destroyed = true;
                     popupModal.modal("hide").data("bs.modal", undefined);
                     componentRef.destroy();
+                }
+            };
+
+            let bsDestroyEventHandler: () => void = () => {
+                if (!modalActions.destroyed) {
+                    destroy();
                     modalActions.close(undefined);
                 }
             };
 
-            popupModal.on("hidden.bs.modal", destroy);
+            popupModal.on("hidden.bs.modal", bsDestroyEventHandler);
 
             resultSubject.subscribe(destroy, destroy, destroy);
 
             instanceSubject.next({
                 jqueryElement: popupModal,
-                result       : resultSubject,
-                discard      : modalActions.discard,
-                close        : modalActions.close,
-                error        : modalActions.error
+                result: resultSubject,
+                discard: modalActions.discard,
+                close: modalActions.close,
+                error: modalActions.error
             });
         });
 
@@ -88,18 +95,15 @@ export class ModalActions {
     constructor (private sub: Subject<any>, public destroyed: boolean = false) {}
 
     discard (): void {
-        this.destroyed = true;
         this.sub.complete();
     };
 
     close (val: any): void {
-        this.destroyed = true;
         this.sub.next(val);
         this.sub.complete();
     };
 
     error (val: any): void {
-        this.destroyed = true;
         this.sub.error(val);
     }
 }
