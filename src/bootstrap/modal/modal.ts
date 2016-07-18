@@ -10,7 +10,13 @@ type ModalBackdrop = "static" | boolean;
 export class Modal {
     constructor (private injector: ng.Injector, private componentResolver: ng.ComponentResolver) {}
 
-    create ({component, providers = [], modalParentSelector = "[a2modalHolder]", keyboard = true, show = true, backdrop = true}: ModalOptions): Observable<ModalInstance> {
+    create ({
+        component, providers = [],
+        modalParentSelector = "[a2modalHolder]",
+        keyboard = true,
+        show = true,
+        backdrop = true
+    }: ModalOptions): Observable<ModalInstance> {
         const instanceSubject: Subject<ModalInstance> = new Subject<ModalInstance>();
         const resultSubject: Subject<ModalInstance> = new Subject<ModalInstance>();
 
