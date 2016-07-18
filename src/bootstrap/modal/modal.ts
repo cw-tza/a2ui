@@ -98,7 +98,8 @@ export interface ModalInstance {
 }
 
 export class ModalActions {
-    constructor (private sub: Subject<any>, public destroyed: boolean = false) {}
+    constructor (private sub: Subject<any>,
+                 public destroyed: boolean = false) {}
 
     discard (): void {
         this.sub.complete();
