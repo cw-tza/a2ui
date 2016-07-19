@@ -6,7 +6,8 @@
 
 <input value="Copy me!" #copyRef>
 <button (click)="copyResult = copy(copyRef)">Copy</button>
-<button *ngIf="copyResult && copyResult.success" (click)="copyResult.clearSelection()">Clear selecton</button> <br>
+<button *ngIf="copyResult && copyResult.success"
+        (click)="copyResult.clearSelection()">Clear selecton</button> <br>
 <span>copyResult: {{copyResult | json}}</span> <br>
 
 <input value="Cut me!" #cutRef>
