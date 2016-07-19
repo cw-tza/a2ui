@@ -5,11 +5,11 @@ export interface ClipboardResult {
     text?: string;
 }
 
-export function copy (source: HTMLElement | string, clearTimeout: number = -1): ClipboardResult {
+export function copy (source: HTMLElement | string): ClipboardResult {
     return executeAction(source, "copy");
 }
 
-export function cut (source: HTMLElement | string, clearTimeout: number = -1): ClipboardResult {
+export function cut (source: HTMLElement | string): ClipboardResult {
     return executeAction(source, "cut");
 }
 
