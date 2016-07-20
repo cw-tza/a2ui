@@ -30,3 +30,12 @@ changeEvent: {{changeEvent | json}}
 <span>modalSuccessResult: {{modalSuccessResult | json}}</span> <br>
 <span>modalSuccessError: {{modalSuccessError | json}}</span> <br>
 <span>modalDone: {{modalDone | json}}</span> <br>
+
+<h1>Cross validate</h1>
+<form #f="ngForm">
+    Local input: <input [(ngModel)]="model_one" name="input" required>
+
+    <component-with-input-inside></component-with-input-inside>
+
+    f.valid: {{f.valid}}
+</form>

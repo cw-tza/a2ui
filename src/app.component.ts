@@ -1,15 +1,19 @@
 import * as ng from "@angular/core";
+import * as f from "@angular/forms";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {OnInitDirective} from "./on-init/on-init.directive";
 import * as cb from "./clipboard/clipbard";
 import {WatchDirective} from "./watch/watch.directive";
 import {Modal, ModalInstance} from "./bootstrap/modal/modal";
 import {MyModalComponent, MY_MODAL_DEPENDENCY} from "./examples/MyModal.component";
+import {CrossValidateDirective} from "./cross-validate/cross-validate.directive";
+import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
 
 @ng.Component({
     selector   : "a2ui-app",
     templateUrl: "src/app.component.html",
-    providers  : [Modal]
+    providers  : [Modal],
+    directives : [ComponentWithInputInsideComponent]
 })
 class AppComponent {
     copy: (source: HTMLElement | string) => cb.ClipboardResult = cb.copy;
@@ -38,8 +42,11 @@ class AppComponent {
         });
     }
 }
-
+f.provideForms()
 bootstrap(AppComponent, [
     {provide: ng.PLATFORM_DIRECTIVES, useValue: OnInitDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
+    {provide: ng.PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
+    f.provideForms(),
+    f.disableDeprecatedForms(),
 ]);
