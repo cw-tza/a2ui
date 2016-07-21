@@ -8,6 +8,8 @@ import {Modal, ModalInstance} from "./bootstrap/modal/modal";
 import {MyModalComponent, MY_MODAL_DEPENDENCY} from "./examples/MyModal.component";
 import {CrossValidateDirective} from "./cross-validate/cross-validate.directive";
 import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
+import {PopoverDirective} from "./bootstrap/popover/popover.directive";
+import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
 
 @ng.Component({
     selector   : "a2ui-app",
@@ -21,6 +23,7 @@ class AppComponent {
     modalSuccessResult: any;
     modalSuccessError: any;
     modalDone: any;
+    ComponentInsidePopoverComponent: any = ComponentInsidePopoverComponent;
 
     constructor (private modal: Modal) {}
 
@@ -42,11 +45,12 @@ class AppComponent {
         });
     }
 }
-f.provideForms()
+
 bootstrap(AppComponent, [
     {provide: ng.PLATFORM_DIRECTIVES, useValue: OnInitDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
+    {provide: ng.PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
     f.provideForms(),
     f.disableDeprecatedForms(),
 ]);
