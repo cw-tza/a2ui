@@ -8,7 +8,9 @@ type ModalBackdrop = "static" | boolean;
 
 @ng.Injectable()
 export class Modal {
-    constructor (private injector: ng.Injector, private componentResolver: ng.ComponentResolver) {}
+    constructor (private injector: ng.Injector,
+                 private componentResolver: ng.ComponentResolver) {
+    }
 
     create ({
         component, providers = [],
@@ -60,10 +62,10 @@ export class Modal {
 
             instanceSubject.next({
                 jqueryElement: popupModal,
-                result: resultSubject,
-                discard: modalActions.discard,
-                close: modalActions.close,
-                error: modalActions.error
+                result       : resultSubject,
+                discard      : modalActions.discard,
+                close        : modalActions.close,
+                error        : modalActions.error
             });
         });
 
