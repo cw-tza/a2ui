@@ -8,9 +8,11 @@ type ModalBackdrop = "static" | boolean;
 
 @ng.Injectable()
 export class Modal {
+    private rootRef: ng.ViewContainerRef;
+
     constructor (private injector: ng.Injector,
-                 private componentResolver: ng.ComponentResolver) {
-    }
+                 private componentResolver: ng.ComponentResolver,
+                 private appRef: ng.ApplicationRef) {}
 
     create ({
         component, providers = [],
@@ -77,9 +79,16 @@ export class Modal {
             .then((componentFactory: ng.ComponentFactory<any>) => {
                 let injector: ng.ReflectiveInjector = ng.ReflectiveInjector.fromResolvedProviders(
                     ng.ReflectiveInjector.resolve(providers), this.injector);
-                return componentFactory.create(injector);
+                return this.getAppRef().createComponent(componentFactory, undefined, injector);
             });
     };
+
+    private getAppRef (): ng.ViewContainerRef {
+        // Hack, until fix:
+        // https://github.com/angular/angular/issues/9293
+        // tslint:disable-next-line
+        return <ng.ViewContainerRef>this.appRef["_rootComponents"][0]["_hostElement"].vcRef;
+    }
 }
 
 export interface ModalOptions {
