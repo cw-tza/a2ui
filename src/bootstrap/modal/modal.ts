@@ -16,7 +16,7 @@ export class Modal {
 
     create ({
         component, providers = [],
-        modalParentSelector = "[a2modalHolder]",
+        modalParentSelector,
         keyboard = true,
         show = true,
         backdrop = true
@@ -28,12 +28,20 @@ export class Modal {
         providers.push({provide: ModalActions, useValue: modalActions});
 
         this.createComponent(component, providers).then((componentRef: ng.ComponentRef<any>) => {
-            let modalParent: Element = document.querySelector(modalParentSelector);
+            let modalParent: Element;
 
-            // tslint:disable-next-line
-            if (modalParent === undefined || modalParent === null) {
-                instanceSubject.error("Can not find parent for modal using query: " + modalParentSelector);
-                return;
+            if (modalParentSelector !== undefined) {
+
+                modalParent = document.querySelector(modalParentSelector);
+
+                // tslint:disable-next-line
+                if (modalParent === undefined || modalParent === null) {
+                    instanceSubject.error("Can not find parent for modal using query: " + modalParentSelector);
+                    return;
+                }
+
+            } else {
+                modalParent = this.getAppRef().element.nativeElement;
             }
 
             modalParent.appendChild(componentRef.location.nativeElement);
