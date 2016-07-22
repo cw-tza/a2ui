@@ -1,22 +1,26 @@
 import * as ng from "@angular/core";
 
+// tslint:disable-next-line
+const $: any = window["$"];
+
 @ng.Directive({
     selector: "[a2Popover]",
     exportAs: "popover",
-    inputs  : ["options: a2Popover"]
+    inputs: ["options: a2Popover"]
 })
 export class PopoverDirective {
     options: {type?: ng.Type, provides?: Array<any>, bs?: any};
     private shown: boolean = false;
+    private popover: any;
+    private component: ng.ComponentRef<any>;
 
-    constructor (private ref: ng.ElementRef,
-                 private vcr: ng.ViewContainerRef,
+    constructor (private vcr: ng.ViewContainerRef,
                  private componentResolver: ng.ComponentResolver,
                  private injector: ng.Injector) {}
 
     toggle (): void {
         if (this.shown) {
-            this.hide();
+            this.destroy();
         } else {
             this.show();
         }
@@ -30,7 +34,7 @@ export class PopoverDirective {
 
         this.createComponent().then((content: any) => {
             let opts: any = {};
-            let bs = this.options.bs || {};
+            let bs: any = this.options.bs || {};
             opts.animation = bs.animation;
             opts.container = bs.container;
             opts.delay = bs.delay;
@@ -43,17 +47,24 @@ export class PopoverDirective {
             opts.trigger = bs.trigger;
             opts.viewport = bs.viewport;
 
-            let jqPopover: any = $(this.ref.nativeElement).popover(opts);
-            jqPopover.popover('show');
+            this.popover = $(this.vcr.element.nativeElement).popover(opts);
+            this.popover.popover("show");
+            this.popover.on("hidden.bs.popover", () => {
+                if (this.component) {
+                    this.component.destroy();
+                    this.component = undefined;
+                }
+            });
         });
     }
 
-    hide (): void {
+    destroy (): void {
         if (!this.shown) {
             return;
         }
-
         this.shown = false;
+
+        this.popover.popover("destroy");
     }
 
     createComponent (): Promise<any> {
@@ -62,6 +73,7 @@ export class PopoverDirective {
         }
         return this.factory(this.options.type, this.options.provides)
             .then((component: ng.ComponentRef<any>) => {
+                this.component = component;
                 return component.location.nativeElement;
             });
     }
@@ -75,11 +87,6 @@ export class PopoverDirective {
                 let injector: ng.ReflectiveInjector = ng.ReflectiveInjector.fromResolvedProviders(
                     ng.ReflectiveInjector.resolve(providers), this.injector);
                 return this.vcr.createComponent(componentFactory, undefined, injector);
-                // return componentFactory.create(injector);
             });
     }
 }
-
-
-// tslint:disable-next-line
-const $: any = window["$"];

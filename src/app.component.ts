@@ -23,7 +23,7 @@ class AppComponent {
     modalSuccessResult: any;
     modalSuccessError: any;
     modalDone: any;
-    ComponentInsidePopoverComponent: any = ComponentInsidePopoverComponent;
+    componentInsidePopoverComponent: any = ComponentInsidePopoverComponent;
 
     constructor (private modal: Modal) {}
 

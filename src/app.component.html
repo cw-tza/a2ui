@@ -43,10 +43,11 @@ changeEvent: {{changeEvent | json}}
 <h1>Popover</h1>
 
 <div style="width: 300px; height: 100px; border: dotted; display: flex; justify-content: center; align-items: center"
-     #p="popover" [a2Popover]="{ type: ComponentInsidePopoverComponent, provides: {provide: 42, useValue: 'answer'}, bs: {placement: 'top'} }">
+     (mouseout)="p.destroy()" (mouseenter)="p.show()"
+     #p="popover" [a2Popover]="{ type: componentInsidePopoverComponent, provides: {provide: 42, useValue: 'answer'}, bs: {placement: 'top'} }">
     Show popover with component inside.
 </div>
 
 <a (click)="p.toggle()">Toggle Popover</a>
 <a (click)="p.show()">Show Popover</a>
-<a (click)="p.hide()">Hide Popover</a>
+<a (click)="p.destroy()">Hide Popover</a>

@@ -8,14 +8,8 @@ type ModalBackdrop = "static" | boolean;
 
 @ng.Injectable()
 export class Modal {
-    private appElementRef: ng.ComponentRef;
-
     constructor (private injector: ng.Injector,
-                 private componentResolver: ng.ComponentResolver,
-                 appRef: ng.ApplicationRef) {
-        appRef.registerBootstrapListener((appComponentRef: ng.ComponentRef) => {
-            this.appElementRef = appComponentRef;
-        });
+                 private componentResolver: ng.ComponentResolver) {
     }
 
     create ({
