@@ -7,7 +7,6 @@ let uploadComponents: UploadDirective[] = [];
 })
 export class UploadDirective implements ng.AfterContentInit, ng.OnDestroy {
     public mouseIsOver: boolean = false;
-    public mouseIsOver: boolean = false;
 
     constructor (public ref: ng.ElementRef) {}
 
