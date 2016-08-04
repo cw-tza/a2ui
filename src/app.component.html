@@ -1,54 +1,99 @@
-<h1>On Init</h1>
-<span (a2OnInit)="onInit = 'set by onInit'">{{onInit}}</span>
-<hr>
+<section class="container grid-960">
 
-<h1>Copy & cut</h1>
+    <h1>On Init</h1>
+    <span (a2OnInit)="onInit = 'set by onInit'">{{onInit}}</span>
+    <hr>
 
-<input value="Copy me!" #copyRef>
-<button (click)="copyResult = copy(copyRef)">Copy</button>
-<button *ngIf="copyResult && copyResult.success"
-        (click)="copyResult.clearSelection()">Clear selecton
-</button> <br>
-<span>copyResult: {{copyResult | json}}</span> <br>
+</section>
 
-<input value="Cut me!" #cutRef>
-<button (click)="cutResult = cut(cutRef)">Cut</button> <br>
-<span>cutResult: {{cutResult | json}}</span> <br>
+<section class="container grid-960">
 
-<button (click)="copyTextResult = copy('Some text')">Copy some text</button>
-<br>
-<span>copyTextResult: {{copyTextResult | json}}</span> <br>
+    <h1>Copy & cut</h1>
 
-<h1>Watcher</h1>
-<input [(ngModel)]="watchData" value="Write here" [a2Watch]="watchData"
-       (a2Change)="changeEvent = $event"> <br>
-changeEvent: {{changeEvent | json}}
+    <input value="Copy me!" #copyRef>
+    <button (click)="copyResult = copy(copyRef)">Copy</button>
+    <button *ngIf="copyResult && copyResult.success"
+            (click)="copyResult.clearSelection()">Clear selection
+    </button>
+    <br>
+    <span>copyResult: {{copyResult | json}}</span> <br>
 
-<h1>Modal</h1>
-<div a2modalHolder></div>
-<button (click)="showModal();">Show modal</button> <br>
-<span>modalSuccessResult: {{modalSuccessResult | json}}</span> <br>
-<span>modalSuccessError: {{modalSuccessError | json}}</span> <br>
-<span>modalDone: {{modalDone | json}}</span> <br>
 
-<h1>Cross validate</h1>
-<form #f="ngForm">
-    Local input: <input [(ngModel)]="model_one" name="input" required>
+    <input value="Cut me!" #cutRef>
+    <button (click)="cutResult = cut(cutRef)">Cut</button>
+    <br>
+    <span>cutResult: {{cutResult | json}}</span> <br>
 
-    <component-with-input-inside></component-with-input-inside>
+    <button (click)="copyTextResult = copy('Some text')">Copy some text</button>
+    <br>
+    <span>copyTextResult: {{copyTextResult | json}}</span> <br>
+    <hr>
+</section>
 
-    f.valid: {{f.valid}}
-</form>
+<section class="container grid-960">
+    <h1>Watcher</h1>
+    <input [(ngModel)]="watchData" value="Write here" [a2Watch]="watchData"
+           (a2Change)="changeEvent = $event"> <br>
+    changeEvent: {{changeEvent | json}}
+    <hr>
+</section>
 
-<h1>Popover</h1>
+<section class="container grid-960">
+    <h1>Modal</h1>
+    <div a2modalHolder></div>
+    <button (click)="showModal();">Show modal</button>
+    <br>
+    <span>modalSuccessResult: {{modalSuccessResult | json}}</span> <br>
+    <span>modalSuccessError: {{modalSuccessError | json}}</span> <br>
+    <span>modalDone: {{modalDone | json}}</span> <br>
+    <hr>
+</section>
 
-<div style="width: 300px; height: 100px; border: dotted; display: flex; justify-content: center; align-items: center"
-     (click)="p.toggle()"
-     #p="popover" [a2Popover]="{ type: componentInsidePopoverComponent, provides: {provide: 42, useValue: 'answer'}, bs: {placement: 'top'} }">
-    Show popover with component inside.
-    Click to toggle
-</div>
+<section class="container grid-960">
+    <h1>Cross validate</h1>
+    <form #f="ngForm">
+        Local input: <input [(ngModel)]="model_one" name="input" required>
 
-<a (click)="p.toggle()">Toggle Popover</a>
-<a (click)="p.show()">Show Popover</a>
-<a (click)="p.destroy()">Hide Popover</a>
+        <component-with-input-inside></component-with-input-inside>
+
+        f.valid: {{f.valid}}
+    </form>
+    <hr>
+</section>
+
+
+<section class="container grid-960">
+    <h1>Popover</h1>
+
+    <div style="width: 300px; height: 100px; border: dotted; display: flex; justify-content: center; align-items: center"
+         (click)="p.toggle()"
+         #p="popover"
+         [a2Popover]="{ type: componentInsidePopoverComponent, provides: {provide: 42, useValue: 'answer'}, bs: {placement: 'top'} }">
+        Show popover with component inside.
+        Click to toggle
+    </div>
+
+    <a (click)="p.toggle()">Toggle Popover</a>
+    <a (click)="p.show()">Show Popover</a>
+    <a (click)="p.destroy()">Hide Popover</a>
+    <hr>
+</section>
+
+<section class="container grid-960">
+
+    <h1>Dropdown</h1>
+
+    <div class="dropdown yolo" (show)="dropdownShow" (shown)="dropdownShown" (hide)="dropdownHide" (hidden)="dropdownHidden" #toggle="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+           role="button" aria-haspopup="true" aria-expanded="false"> Dropdown
+            <span class="caret"></span> </a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+
+</section>

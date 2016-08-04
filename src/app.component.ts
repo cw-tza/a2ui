@@ -10,6 +10,7 @@ import {CrossValidateDirective} from "./cross-validate/cross-validate.directive"
 import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
 import {PopoverDirective} from "./bootstrap/popover/popover.directive";
 import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
+import {Dropdown} from "./bootstrap/dropdown/dropdown";
 
 @ng.Component({
     selector   : "a2ui-app",
@@ -51,6 +52,7 @@ bootstrap(AppComponent, [
     {provide: ng.PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
+    {provide: ng.PLATFORM_DIRECTIVES, useValue: Dropdown, multi: true},
     f.provideForms(),
     f.disableDeprecatedForms(),
 ]);
