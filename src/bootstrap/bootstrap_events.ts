@@ -6,9 +6,9 @@ import {EventManagerPlugin} from "@angular/platform-browser/src/dom/events/event
 const $: any = window["$"];
 
 export const BOOTSTRAP_EVENTS_PLUGIN: any = {
-    provide : EVENT_MANAGER_PLUGINS,
+    provide: EVENT_MANAGER_PLUGINS,
     useClass: ng.forwardRef(() => BootstrapEventsPlugin),
-    multi   : true
+    multi: true
 };
 
 @ng.Injectable()
@@ -20,7 +20,7 @@ export class BootstrapEventsPlugin extends EventManagerPlugin {
     addEventListener (element: HTMLElement, eventName: string, handler: Function): Function {
         let zone: ng.NgZone = this.manager.getZone();
         let outsideHandler: any = (event: any) => {
-            zone.runGuarded(() => handler(event))
+            zone.runGuarded(() => handler(event));
         };
         return this.manager.getZone().runOutsideAngular(
             () => {
