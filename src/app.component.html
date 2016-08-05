@@ -249,6 +249,7 @@ Your rating: <input [(ngModel)]="rating" name="input" type="number" *ngIf="ratin
 
 <h1>Pagination</h1>
 <pagination [pageSize]="pageSize" [data]="data">
+
     <template pageTemplate let-persons="var">
         <table class="table">
             <tr>

@@ -1,21 +1,30 @@
 <div>
     <div>
-        <template [ngTemplateOutlet]="pageTemplate.templateRef" [ngOutletContext]="prepareContext(index)"></template>
+        <template [ngTemplateOutlet]="pageTemplate.templateRef" [ngOutletContext]="prepareContext()"></template>
     </div>
-
     <div>
-        <nav>
+        <nav class="text-center">
             <ul class="pagination">
                 <li [class.disabled]="!hasPrev()">
-                    <a aria-label="Previous" (click)="previous()">
+                    <a aria-label="First" (click)="openFirst()">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li [class.disabled]="!hasPrev()">
+                    <a aria-label="Previous" (click)="openPrevious()">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li *ngFor="let pageNumber of pages; let index = index" [class.active]="index === currentPage"><a
                         (click)="open(index)">{{index + 1}}</a></li>
                 <li [class.disabled]="!hasNext()">
-                    <a aria-label="Next" (click)="next()">
+                    <a aria-label="Next" (click)="openNext()">
                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li [class.disabled]="!hasNext()">
+                    <a aria-label="Last" (click)="openLast()">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
                     </a>
                 </li>
             </ul>

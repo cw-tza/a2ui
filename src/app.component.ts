@@ -20,12 +20,13 @@ import {
 } from "./accordion/accordion.component";
 import {TABS_DIRECTIVES} from "./tabs/tabs.component";
 import {PAGINATION_DIRECTIVES} from "./pagination/pagination.component";
+import {DataTable, Column} from "./data-table/data-table.component";
 
 @ng.Component({
     selector: "a2ui-app",
     templateUrl: "src/app.component.html",
     providers: [Modal],
-    directives: [ComponentWithInputInsideComponent, ACCORDION_DIRECTIVES, Rating, Alert, TABS_DIRECTIVES, PAGINATION_DIRECTIVES]
+    directives: [ComponentWithInputInsideComponent, ACCORDION_DIRECTIVES, Rating, Alert, TABS_DIRECTIVES, PAGINATION_DIRECTIVES, DataTable, Column]
 })
 class AppComponent implements AfterContentInit {
     copy: (source: HTMLElement | string) => cb.ClipboardResult = cb.copy;
@@ -66,7 +67,6 @@ class AppComponent implements AfterContentInit {
         });
 
         this.accordion.contentChange.subscribe($event => {
-            console.log($event);
             this.accordionContentState = $event;
             this.accordion.open($event[0].name);
         });
@@ -123,11 +123,15 @@ class AppComponent implements AfterContentInit {
 
     // tabs
     openedTab: string = "a1";
-    
+
     // pagination
+    todo: any;
     pageSize: number = 3;
     current: number = 2;
-    data: Array<any>  = [
+    data: Array<any> = [
+        {name: "Harrison", surname: "Jones", age: "72"},
+        {name: "Han", surname: "Ford", age: "83"},
+        {name: "Albert", surname: "Einstein", age: "23"},
         {name: "Harrison", surname: "Jones", age: "72"},
         {name: "Han", surname: "Ford", age: "83"},
         {name: "Albert", surname: "Zweitein", age: "23"},
@@ -139,9 +143,11 @@ class AppComponent implements AfterContentInit {
         {name: "Albert", surname: "Viertein", age: "23"},
         {name: "Harrison", surname: "Jones", age: "72"},
         {name: "Han", surname: "Ford", age: "83"},
-        {name: "Albert", surname: "Funftein", age: "23"},
+        {name: "Albert", surname: "Funftein", age: "23"}
     ];
-    
+
+
+
 }
 
 bootstrap(AppComponent, [

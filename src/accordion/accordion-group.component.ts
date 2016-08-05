@@ -53,10 +53,9 @@ export class AccordionGroup {
     public header: string;
 
     constructor(@Inject(forwardRef(() => Accordion)) public parent: Accordion) {
-        console.log(this.name);
     }
 
-    toggle(): void {
+    private toggle(): void {
         if (this.disabled) return;
         this.opened ? this.parent.close(this.name) : this.parent.open(this.name);
     }
