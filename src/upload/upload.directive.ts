@@ -7,7 +7,6 @@ let uploadComponents: UploadDirective[] = [];
 })
 export class UploadDirective implements ng.AfterContentInit, ng.OnDestroy {
     public mouseIsOver: boolean = false;
-    public mouseIsOver: boolean = false;
 
     constructor (public ref: ng.ElementRef) {}
 
@@ -48,7 +47,8 @@ document.addEventListener("dragleave", (event: DragEvent) => {
 });
 
 function isDragSourceExternalFile (event: DragEvent): boolean {
-    let dt = event.dataTransfer;
+    let dt: DataTransfer = event.dataTransfer;
+    // tslint:disable-next-line
     return dt.types != null && ((<any>dt.types).indexOf ? (<any>dt.types).indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'));
 }
 

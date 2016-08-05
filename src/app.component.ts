@@ -11,6 +11,7 @@ import {ComponentWithInputInsideComponent} from "./examples/component-with-input
 import {PopoverDirective} from "./bootstrap/popover/popover.directive";
 import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
 import {Dropdown} from "./bootstrap/dropdown/dropdown";
+import {BOOTSTRAP_EVENTS_PLUGIN} from "./bootstrap/bootstrap_events";
 
 @ng.Component({
     selector   : "a2ui-app",
@@ -53,6 +54,7 @@ bootstrap(AppComponent, [
     {provide: ng.PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: Dropdown, multi: true},
+    BOOTSTRAP_EVENTS_PLUGIN,
     f.provideForms(),
     f.disableDeprecatedForms(),
 ]);

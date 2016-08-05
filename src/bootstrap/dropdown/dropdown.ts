@@ -1,15 +1,17 @@
 import * as ng from "@angular/core";
 
+// tslint:disable-next-line
+const $: any = window["$"];
+
 @ng.Directive({
-    selector: "[a2Dropdown]",
-    exportAs: "dropdown"
+    selector: "[a2Dropdown]"
 })
 export class Dropdown {
-    constructor() {
-        console.log("dropdown");
-    }
 
-    toggle() {
-
+    constructor (ref: ng.ElementRef) {
+        // tslint:disable-next-line
+        ref.nativeElement["toggle"] = () => {
+            $(ref.nativeElement).dropdown("toggle");
+        };
     }
 }

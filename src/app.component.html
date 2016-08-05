@@ -79,13 +79,19 @@
     <hr>
 </section>
 
-<section class="container grid-960">
+<section class="container grid-960" (a2OnInit)="dropdownEvents = []">
 
     <h1>Dropdown</h1>
 
-    <div class="dropdown yolo" (show)="dropdownShow" (shown)="dropdownShown" (hide)="dropdownHide" (hidden)="dropdownHidden" #toggle="dropdown">
+    <span class="dropdown"
+          (show.bs.dropdown)="dropdownEvents.push('show')"
+          (shown.bs.dropdown)="dropdownEvents.push('shown')"
+          (hide.bs.dropdown)="dropdownEvents.push('hide')"
+          (hidden.bs.dropdown)="dropdownEvents.push('hidden')">
+
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-           role="button" aria-haspopup="true" aria-expanded="false"> Dropdown
+           role="button" aria-haspopup="true" aria-expanded="false" a2Dropdown
+           #d> Dropdown
             <span class="caret"></span> </a>
         <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
@@ -94,6 +100,15 @@
             <li role="separator" class="divider"></li>
             <li><a href="#">Separated link</a></li>
         </ul>
+    </span>
+
+    <div style="overflow-y: auto; height: 200px">
+
+    <div class="alert alert-info" *ngFor="let i of dropdownEvents">
+        <a class="close" aria-label="close" (click)="dropdownEvents.splice(dropdownEvents.indexOf(i), 1)">&times;</a>
+        <strong>Event!</strong> {{ i }}
+    </div>
+
     </div>
 
 </section>
