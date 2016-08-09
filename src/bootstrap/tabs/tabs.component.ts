@@ -1,10 +1,9 @@
-import {Component, forwardRef, ContentChildren, QueryList, AfterContentInit, Input, Output} from "@angular/core";
+import {Component, forwardRef, ContentChildren, QueryList, AfterContentInit, Input, Output, EventEmitter} from "@angular/core";
 import {Tab, TabHeader, TabBody} from "./tab.component";
-import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
 
 @Component({
     selector: "tabs",
-    templateUrl: "src/tabs/tabs.component.html"
+    templateUrl: "src/bootstrap/tabs/tabs.component.html"
 })
 export class Tabs implements AfterContentInit {
 

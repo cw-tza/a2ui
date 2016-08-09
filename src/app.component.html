@@ -265,3 +265,14 @@ Your rating: <input [(ngModel)]="rating" name="input" type="number" *ngIf="ratin
         </table>
     </template>
 </pagination>
+
+<h1>Table</h1>
+ {{ tableData | json}}
+<data-table [columnsDefinition]="columnsDefinition" [data]="tableData" (rowSelection)="rowSelection($event)">
+
+    <column header="Name" content="name" sortBy="name" filterBy="name" [editable]="true"></column>
+    <column header="Surname" content="surname" sortBy="surname" filterBy="surname" ></column>
+    <column header="Age" content="age" sortBy="age" filterBy="age"></column>
+    <column header="Nested" content="nested.value" sortBy="nested.value" filterBy="nested.value" [editable]="true"></column>
+
+</data-table>

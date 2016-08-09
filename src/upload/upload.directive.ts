@@ -1,14 +1,14 @@
-import * as ng from "@angular/core";
+import {Directive, AfterContentInit, OnDestroy, ElementRef} from "@angular/core";
 
 let uploadComponents: UploadDirective[] = [];
 
-@ng.Directive({
+@Directive({
     selector: "a2Upload, [a2Upload]"
 })
-export class UploadDirective implements ng.AfterContentInit, ng.OnDestroy {
+export class UploadDirective implements AfterContentInit, OnDestroy {
     public mouseIsOver: boolean = false;
 
-    constructor (public ref: ng.ElementRef) {}
+    constructor (public ref: ElementRef) {}
 
     ngAfterContentInit (): void {
         uploadComponents.push(this);
@@ -47,8 +47,8 @@ document.addEventListener("dragleave", (event: DragEvent) => {
 });
 
 function isDragSourceExternalFile (event: DragEvent): boolean {
-    let dt = event.dataTransfer;
-    return dt.types != null && ((<any>dt.types).indexOf ? (<any>dt.types).indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'));
+    let dt: any = event.dataTransfer;
+    return dt.types !== undefined && ((<any>dt.types).indexOf ? (<any>dt.types).indexOf("Files") !== -1 : dt.types.contains("application/x-moz-file"));
 }
 
 function getUploadDirective (event: DragEvent): UploadDirective {

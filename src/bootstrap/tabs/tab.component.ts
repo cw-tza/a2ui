@@ -1,4 +1,4 @@
-import {ContentChild, Directive, forwardRef, AfterContentInit, TemplateRef, Input} from "@angular/core";
+import {ContentChild, Directive, forwardRef, TemplateRef, Input} from "@angular/core";
 
 let nextId: number = 0;
 

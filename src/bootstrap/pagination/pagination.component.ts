@@ -5,7 +5,7 @@ import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
 
 @Component({
     selector: "pagination",
-    templateUrl: "src/pagination/pagination.component.html",
+    templateUrl: "src/bootstrap/pagination/pagination.component.html",
 })
 export class Pagination implements OnChanges {
 
@@ -23,6 +23,7 @@ export class Pagination implements OnChanges {
 
     private currentPage: number = 0;
     private pages: Array<number>;
+    private context: any = {};
 
     ngOnChanges (changes: SimpleChanges): any {
         if (changes.hasOwnProperty("data")) {
@@ -31,9 +32,8 @@ export class Pagination implements OnChanges {
     }
 
     private prepareContext(): any {
-        let context: any = {};
-        context[this.v] = this.data.slice(this.currentPage * this.pageSize, this.currentPage * this.pageSize + this.pageSize);
-        return context;
+        this.context[this.v] = this.data.slice(this.currentPage * this.pageSize, this.currentPage * this.pageSize + this.pageSize);
+        return this.context;
     }
 
     private openNext(): void {

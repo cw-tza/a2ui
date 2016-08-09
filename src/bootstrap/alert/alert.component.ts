@@ -3,7 +3,7 @@ import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
 
 @Component({
     selector: "alert",
-    templateUrl: "src/alert/alert.component.html"
+    templateUrl: "src/bootstrap/alert/alert.component.html"
 })
 export class Alert implements OnInit {
     @Input()

@@ -1,5 +1,5 @@
-import * as ng from "@angular/core";
-import * as f from "@angular/forms";
+import {AfterContentInit, Component, PLATFORM_DIRECTIVES} from "@angular/core";
+import {provideForms, disableDeprecatedForms} from "@angular/forms";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {OnInitDirective} from "./on-init/on-init.directive";
 import * as cb from "./clipboard/clipbard";
@@ -10,19 +10,18 @@ import {CrossValidateDirective} from "./cross-validate/cross-validate.directive"
 import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
 import {PopoverDirective} from "./bootstrap/popover/popover.directive";
 import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
-import {Rating} from "./rating/rating.component";
-import {AfterContentInit} from "@angular/core";
+import {Rating} from "./bootstrap/rating/rating.component";
 import {ViewChild} from "@angular/core";
-import {Alert} from "./alert/alert.component";
+import {Alert} from "./bootstrap/alert/alert.component";
 import {
     ACCORDION_DIRECTIVES, AccordionGroupState, AccordionNavigationEvent,
     Accordion
-} from "./accordion/accordion.component";
-import {TABS_DIRECTIVES} from "./tabs/tabs.component";
-import {PAGINATION_DIRECTIVES} from "./pagination/pagination.component";
-import {DataTable, Column} from "./data-table/data-table.component";
+} from "./bootstrap/accordion/accordion.component";
+import {TABS_DIRECTIVES} from "./bootstrap/tabs/tabs.component";
+import {PAGINATION_DIRECTIVES} from "./bootstrap/pagination/pagination.component";
+import {DataTable, Column} from "./bootstrap/data-table/data-table.component";
 
-@ng.Component({
+@Component({
     selector: "a2ui-app",
     templateUrl: "src/app.component.html",
     providers: [Modal],
@@ -146,15 +145,36 @@ class AppComponent implements AfterContentInit {
         {name: "Albert", surname: "Funftein", age: "23"}
     ];
 
+    // data table
+    tableData: Array<any> = [
+        {name: "Harrison", surname: "Jones", age: "72", nested: {value: "Adventurer"}},
+        {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
+        {name: "Albert", surname: "Einstein", age: "23", nested: {value: "Adventurer"}},
+        {name: "Harrison", surname: "Jones", age: "72", nested: {value: "Egghead"}},
+        {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
+        {name: "Albert", surname: "Zweitein", age: "23", nested: {value: "Egghead"}},
+        {name: "Harrison", surname: "Jones", age: "72", nested: {value: "Adventurer"}},
+        {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
+        {name: "Albert", surname: "Dreitein", age: "23", nested: {value: "Egghead"}},
+        {name: "Harrison", surname: "Jones", age: "72", nested: {value: "Adventurer"}},
+        {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
+        {name: "Albert", surname: "Viertein", age: "23", nested: {value: "Egghead"}},
+        {name: "Harrison", surname: "Jones", age: "72", nested: {value: "Adventurer"}},
+        {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
+        {name: "Albert", surname: "Funftein", age: "23", nested: {value: "Egghead"}}
+    ];
 
+    rowSelection($event: any): any {
+        console.log($event);
+    }
 
 }
 
 bootstrap(AppComponent, [
-    {provide: ng.PLATFORM_DIRECTIVES, useValue: OnInitDirective, multi: true},
-    {provide: ng.PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
-    {provide: ng.PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
-    {provide: ng.PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
-    f.provideForms(),
-    f.disableDeprecatedForms(),
+    {provide: PLATFORM_DIRECTIVES, useValue: OnInitDirective, multi: true},
+    {provide: PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
+    {provide: PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
+    {provide: PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
+    provideForms(),
+    disableDeprecatedForms(),
 ]);

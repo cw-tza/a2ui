@@ -1,0 +1,20 @@
+<pagination [pageSize]="pageSize" [data]="dataToDisplay">
+    <template pageTemplate let-rows="var">
+        <table class="table">
+            <tr>
+                <th *ngFor="let column of columns">
+                    <p (click)="orderBy(column)">{{column.header}}</p>
+                    <div *ngIf="column.sortBy" class="glyphicon"
+                         [ngClass]="{'glyphicon-menu-up': column.order === 1, 'glyphicon-menu-down': column.order === -1}"></div>
+                    <input (keyup)="filter()" [(ngModel)]="filters[column.content]" *ngIf="column.filterBy">
+                </th>
+            </tr>
+            <tr (dblclick)="emitSelectEvent(row)" *ngFor="let row of rows">
+                <td *ngFor="let column of columns">
+                    <div *ngIf="!column.editable">{{valueOf(row, column.content)}}</div>
+                    <input *ngIf="column.editable" [ngModel]="valueOf(row, column.content)" (ngModelChange)="edit($event, column, row)">
+                </td>
+            </tr>
+        </table>
+    </template>
+</pagination>

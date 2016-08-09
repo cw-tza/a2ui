@@ -1,7 +1,6 @@
-import * as ng from "@angular/core";
-import {Inject} from "@angular/core";
+import {Inject, Component} from "@angular/core";
 
-@ng.Component({
+@Component({
     selector: "component-inside-popover.component",
     templateUrl: "src/examples/component-inside-popover.component.html"
 })

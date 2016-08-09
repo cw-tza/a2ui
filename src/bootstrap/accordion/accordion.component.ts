@@ -1,18 +1,9 @@
-import {ContentChildren} from "@angular/core";
-import {QueryList} from "@angular/core";
+import {ContentChildren, QueryList, forwardRef, AfterContentInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, Component } from "@angular/core";
 import {AccordionGroup} from "./accordion-group.component";
-import {forwardRef} from "@angular/core";
-import {AfterContentInit} from "@angular/core";
-import {Input} from "@angular/core";
-import {Output} from "@angular/core";
-import {EventEmitter} from "@angular/core";
-import {OnChanges} from "@angular/core";
-import {SimpleChanges} from "@angular/core";
-import {Component} from "@angular/core";
 
 @Component({
     selector: "accordion",
-    templateUrl: "src/accordion/accordion.component.html"
+    templateUrl: "src/bootstrap/accordion/accordion.component.html"
 })
 export class Accordion implements AfterContentInit, OnChanges {
 
@@ -96,4 +87,3 @@ export interface AccordionGroupState {
 }
 
 export const ACCORDION_DIRECTIVES: Array<any> = [Accordion, AccordionGroup];
-

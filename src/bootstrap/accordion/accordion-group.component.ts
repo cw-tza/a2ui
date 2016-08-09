@@ -1,5 +1,4 @@
-import * as ng from "@angular/core";
-import {Inject, forwardRef} from "@angular/core";
+import {Inject, forwardRef, Component} from "@angular/core";
 import {Accordion} from "./accordion.component";
 import {animate} from "@angular/core";
 import {transition} from "@angular/core";
@@ -10,9 +9,9 @@ import {Input} from "@angular/core";
 
 let nextId: number = 0;
 
-@ng.Component({
+@Component({
     selector: "accordion-group",
-    templateUrl: "src/accordion/accordion-group.component.html",
+    templateUrl: "src/bootstrap/accordion/accordion-group.component.html",
     animations: [
         trigger("state", [
             state("collapsed", style({
