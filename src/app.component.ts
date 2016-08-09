@@ -1,5 +1,5 @@
-import {AfterContentInit, Component, PLATFORM_DIRECTIVES} from "@angular/core";
-import {provideForms, disableDeprecatedForms} from "@angular/forms";
+import * as ng from "@angular/core";
+import * as f from "@angular/forms";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {OnInitDirective} from "./on-init/on-init.directive";
 import * as cb from "./clipboard/clipbard";
@@ -10,6 +10,8 @@ import {CrossValidateDirective} from "./cross-validate/cross-validate.directive"
 import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
 import {PopoverDirective} from "./bootstrap/popover/popover.directive";
 import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
+import {Dropdown} from "./bootstrap/dropdown/dropdown";
+import {BOOTSTRAP_EVENTS_PLUGIN} from "./bootstrap/bootstrap_events";
 import {Rating} from "./bootstrap/rating/rating.component";
 import {ViewChild} from "@angular/core";
 import {Alert} from "./bootstrap/alert/alert.component";
@@ -175,6 +177,8 @@ bootstrap(AppComponent, [
     {provide: PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
     {provide: PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
     {provide: PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
+    {provide: PLATFORM_DIRECTIVES, useValue: Dropdown, multi: true},
+    BOOTSTRAP_EVENTS_PLUGIN,
     provideForms(),
     disableDeprecatedForms(),
 ]);
