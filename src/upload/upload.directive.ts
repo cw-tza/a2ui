@@ -11,18 +11,18 @@ export class UploadDirective implements ng.AfterContentInit, ng.OnDestroy {
     public mouseIsOver: boolean = false;
     public fileIn: ng.EventEmitter<boolean> = new ng.EventEmitter<boolean>();
 
-    constructor (public ref: ng.ElementRef, public zone: ng.NgZone) {
+    constructor(public ref: ng.ElementRef, public zone: ng.NgZone) {
         ref.nativeElement.addEventListener("dragover", function (): boolean {
             // Element can handle drop event
             return false;
         });
     }
 
-    ngAfterContentInit (): void {
+    ngAfterContentInit(): void {
         uploadComponents.push(this);
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         uploadComponents.splice(uploadComponents.indexOf(this), 1);
     };
 }
@@ -35,13 +35,14 @@ export class GlobalUploadDirective implements ng.AfterContentInit, ng.OnDestroy 
     public mouseIsOver: boolean = false;
     public globalFileIn: ng.EventEmitter<boolean> = new ng.EventEmitter<boolean>();
 
-    constructor (public zone: ng.NgZone) {}
+    constructor(public zone: ng.NgZone) {
+    }
 
-    ngAfterContentInit (): void {
+    ngAfterContentInit(): void {
         globalDragStartListeners.push(this);
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         globalDragStartListeners.splice(globalDragStartListeners.indexOf(this), 1);
     };
 }
@@ -68,7 +69,7 @@ document.addEventListener("dragover", (event: DragEvent) => {
         }
 
 
-        for (let i = 0; i < globalDragStartListeners.length; i++) {
+        for (let i: number = 0; i < globalDragStartListeners.length; i++) {
             let listener: GlobalUploadDirective = globalDragStartListeners[i];
             if (listener.mouseIsOver === false) {
                 listener.mouseIsOver = true;
@@ -107,7 +108,7 @@ document.addEventListener("dragleave", (event: DragEvent) => {
     }
 
     dragTimer = window.setTimeout(() => {
-        for (let i = 0; i < globalDragStartListeners.length; i++) {
+        for (let i: number = 0; i < globalDragStartListeners.length; i++) {
             let listener: GlobalUploadDirective = globalDragStartListeners[i];
             listener.mouseIsOver = false;
 
@@ -118,19 +119,19 @@ document.addEventListener("dragleave", (event: DragEvent) => {
     }, 80);
 });
 
-function isDragSourceExternalFile (event: DragEvent): boolean {
+function isDragSourceExternalFile(event: DragEvent): boolean {
     let dt: DataTransfer = event.dataTransfer;
     // tslint:disable-next-line
     return dt.types != null && ((<any>dt.types).indexOf ? (<any>dt.types).indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'));
 }
 
-function getUploadDirective (event: DragEvent): UploadDirective {
+function getUploadDirective(event: DragEvent): UploadDirective {
     return uploadComponents.find((d) => {
         return inSide(<HTMLElement>event.target, d.ref.nativeElement);
     });
 }
 
-function inSide (element: Node, container: HTMLElement): boolean {
+function inSide(element: Node, container: HTMLElement): boolean {
     if (!(element === container)) {
         if (element !== document.body && element !== null) {
             return inSide(element.parentNode, container);

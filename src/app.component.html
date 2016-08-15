@@ -104,10 +104,11 @@
 
     <div style="overflow-y: auto; height: 200px">
 
-    <div class="alert alert-info" *ngFor="let i of dropdownEvents">
-        <a class="close" aria-label="close" (click)="dropdownEvents.splice(dropdownEvents.indexOf(i), 1)">&times;</a>
-        <strong>Event!</strong> {{ i }}
-    </div>
+        <div class="alert alert-info" *ngFor="let i of dropdownEvents">
+            <a class="close" aria-label="close"
+               (click)="dropdownEvents.splice(dropdownEvents.indexOf(i), 1)">&times;</a>
+            <strong>Event!</strong> {{ i }}
+        </div>
 
     </div>
 
@@ -118,15 +119,24 @@
     <h1>Upload</h1>
 
     <div
-         style="width: 300px; height: 100px; display: flex; justify-content: center; align-items: center"
-         class="dropzone"
-         (a2GlobalFileIn)="gloablFileIn = $event"
-         (a2FileIn)="fileIn = ($event);"
-         [class.dropzone-global]="gloablFileIn && !fileIn"
-         [class.dropzone-local]="fileIn">
+            style="width: 300px; height: 100px; display: flex; justify-content: center; align-items: center"
+            class="dropzone"
+            (a2GlobalFileIn)="globalFileIn = $event"
+            (a2FileIn)="fileIn = ($event);"
+            [class.dropzone-global]="globalFileIn && !fileIn"
+            [class.dropzone-local]="fileIn">
 
-        <div style="width: 100px; height: 50px; border: dotted;  display: flex; justify-content: center; align-items: center">
-            Drag File Here!
+        <div class="sqbrackets"
+             style="display: flex; justify-content: center; align-items: center"
+             [class.sqbrackets-global]="globalFileIn && !fileIn"
+             [class.sqbrackets-local]="fileIn">
+
+            <div> Drag File Here!
+                <span *ngIf="!globalFileIn && !fileIn"> ( Outside ) </span>
+                <span *ngIf="globalFileIn && !fileIn"> ( Global ) </span>
+                <span *ngIf="fileIn"> ( Local ) </span>
+            </div>
+
         </div>
 
     </div>

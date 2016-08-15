@@ -48,7 +48,7 @@ class AppComponent {
         });
     }
 
-    foo(e) {
+    foo(e: any): void {
         console.log("foo", e);
     }
 }
