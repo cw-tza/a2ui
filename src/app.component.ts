@@ -1,5 +1,4 @@
-import * as ng from "@angular/core";
-import * as f from "@angular/forms";
+import {ViewChild, Component, AfterContentInit} from "@angular/core";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {OnInitDirective} from "./on-init/on-init.directive";
 import * as cb from "./clipboard/clipbard";
@@ -13,7 +12,6 @@ import {ComponentInsidePopoverComponent} from "./examples/component-inside-popov
 import {Dropdown} from "./bootstrap/dropdown/dropdown";
 import {BOOTSTRAP_EVENTS_PLUGIN} from "./bootstrap/bootstrap_events";
 import {Rating} from "./bootstrap/rating/rating.component";
-import {ViewChild} from "@angular/core";
 import {Alert} from "./bootstrap/alert/alert.component";
 import {
     ACCORDION_DIRECTIVES, AccordionGroupState, AccordionNavigationEvent,
@@ -22,6 +20,9 @@ import {
 import {TABS_DIRECTIVES} from "./bootstrap/tabs/tabs.component";
 import {PAGINATION_DIRECTIVES} from "./bootstrap/pagination/pagination.component";
 import {DataTable, Column} from "./bootstrap/data-table/data-table.component";
+import {PLATFORM_DIRECTIVES} from "@angular/core";
+import {provideForms} from "@angular/forms";
+import {disableDeprecatedForms} from "@angular/forms";
 
 @Component({
     selector: "a2ui-app",

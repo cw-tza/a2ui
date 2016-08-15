@@ -104,11 +104,247 @@
 
     <div style="overflow-y: auto; height: 200px">
 
-    <div class="alert alert-info" *ngFor="let i of dropdownEvents">
-        <a class="close" aria-label="close" (click)="dropdownEvents.splice(dropdownEvents.indexOf(i), 1)">&times;</a>
-        <strong>Event!</strong> {{ i }}
-    </div>
+        <div class="alert alert-info" *ngFor="let i of dropdownEvents">
+            <a class="close" aria-label="close"
+               (click)="dropdownEvents.splice(dropdownEvents.indexOf(i), 1)">&times;</a>
+            <strong>Event!</strong> {{ i }}
+        </div>
 
     </div>
 
+
+</section>
+
+
+<section class="container grid-960">
+    <h1>Accordion</h1>
+    <button (click)="toggle('ignoreDisabled')">{{ignoreDisabled ? 'Disable' : 'Enable'}} Ignoring disabled groups
+    </button>
+    <button (click)="toggle('groupPresent')">{{groupPresent ? 'Remove' : 'Add'}} group</button>
+    <button (click)="toggle('closeOthers')">{{closeOthers ? 'Disable' : 'Enable'}} Close others</button>
+
+    <button (click)="prev();">Prev</button>
+    <button (click)="next();">Next</button>
+
+    <accordion #acc [closeOther]="closeOthers" [ignoreDisabled]="ignoreDisabled">
+        <accordion-group [opened]="true" header="One">
+            <table>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                </tr>
+            </table>
+        </accordion-group>
+        <accordion-group [valid]="test2" [disabled]="true" header="Two">
+            <table>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                </tr>
+            </table>
+        </accordion-group>
+        <accordion-group header="Three">
+            <table>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                </tr>
+            </table>
+        </accordion-group>
+        <accordion-group *ngIf="groupPresent" header="Four">
+            <table>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                </tr>
+            </table>
+        </accordion-group>
+    </accordion>
+
+    Accordion navigation state:<br/>
+    <ul>
+        <li>Prev: {{accordionNavigationState.prev}}</li>
+        <li>Current: {{accordionNavigationState.current}}</li>
+        <li>Next: {{accordionNavigationState.next}}</li>
+    </ul>
+    Accordion content state:<br/>
+    {{accordionContentState | json}}
+
+</section>
+
+<section class="container grid-960">
+    <h1>Rating</h1>
+    <button (click)="toggle('ratingDisabled')">{{ratingDisabled ? 'Disable' : 'Enable'}} display mode</button>
+    <br/>
+    Your rating: <input [(ngModel)]="rating" name="input" type="number" *ngIf="ratingDisabled"><span
+        *ngIf="!ratingDisabled">{{rating}}</span>
+    <div style="font-size: 20px">
+        <rating [disabled]="ratingDisabled" [rate]="rating" [max]="3" (rateChange)="ratingChange($event)"
+                (hoover)="ratingChange($event)"></rating>
+        <br/>
+    </div>
+</section>
+
+<section class="container grid-960">
+    <h1>Alert</h1>
+
+    <button (click)="createAlerts()">Add few alerts!</button>
+
+    <p *ngFor="let alert of alerts; let i = index">
+        <alert *ngIf="alert.show" [type]="alert.type" [skippable]="alert.skippable"
+               [displayTime]="alert.displayTime" (close)="hideEvent(i)">{{alert.content}}
+        </alert>
+    </p>
+</section>
+
+<section class="container grid-960">
+    <h1>Tabs</h1>
+
+    <tabs [openedTab]="openedTab" type="tabs">
+        <tab name="a1">
+            <template tabHeader>HHH</template>
+            <template tabBody>
+                <table>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Age</th>
+                    </tr>
+                    <tr>
+                        <td>Jill</td>
+                        <td>Smith</td>
+                        <td>50</td>
+                    </tr>
+                    <tr>
+                        <td>Eve</td>
+                        <td>Jackson</td>
+                        <td>94</td>
+                    </tr>
+                </table>
+            </template>
+        </tab>
+        <tab name="a2" [disabled]="true">
+            <template tabHeader>HHH</template>
+            <template tabBody>
+                <table>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Age</th>
+                    </tr>
+                    <tr>
+                        <td>Dan</td>
+                        <td>Smith</td>
+                        <td>30</td>
+                    </tr>
+                    <tr>
+                        <td>Ben</td>
+                        <td>Jackson</td>
+                        <td>64</td>
+                    </tr>
+                </table>
+            </template>
+        </tab>
+        <tab name="a3">
+            <template tabHeader>HHH</template>
+            <template tabBody>
+                <table>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Age</th>
+                    </tr>
+                    <tr>
+                        <td>Bill</td>
+                        <td>Smith</td>
+                        <td>54</td>
+                    </tr>
+                    <tr>
+                        <td>Will</td>
+                        <td>Jackson</td>
+                        <td>34</td>
+                    </tr>
+                </table>
+            </template>
+        </tab>
+    </tabs>
+</section>
+
+<section class="container grid-960">
+    <h1>Pagination</h1>
+    <pagination [pageSize]="pageSize" [data]="data">
+
+        <template pageTemplate let-persons="var">
+            <table class="table">
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr *ngFor="let person of persons">
+                    <td>{{person.name}}</td>
+                    <td>{{person.surname}}</td>
+                    <td>{{person.age}}</td>
+                </tr>
+            </table>
+        </template>
+    </pagination>
+</section>
+
+<section class="container grid-960">
+    <h1>Table</h1>
+    {{ tableData | json}}
+    <data-table [columnsDefinition]="columnsDefinition" [data]="tableData" (rowSelection)="rowSelection($event)">
+
+        <column header="Name" content="name" sortBy="name" filterBy="name" [editable]="true"></column>
+        <column header="Surname" content="surname" sortBy="surname" filterBy="surname"></column>
+        <column header="Age" content="age" sortBy="age" filterBy="age"></column>
+        <column header="Nested" content="nested.value" sortBy="nested.value" filterBy="nested.value"
+                [editable]="true"></column>
+
+    </data-table>
 </section>
