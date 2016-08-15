@@ -10,8 +10,9 @@ import {CrossValidateDirective} from "./cross-validate/cross-validate.directive"
 import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
 import {PopoverDirective} from "./bootstrap/popover/popover.directive";
 import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
-import {Dropdown} from "./bootstrap/dropdown/dropdown";
+import {DropdownDirective} from "./bootstrap/dropdown/dropdown.directive";
 import {BOOTSTRAP_EVENTS_PLUGIN} from "./bootstrap/bootstrap_events";
+import {UploadDirective, GlobalUploadDirective} from "./upload/upload.directive";
 
 @ng.Component({
     selector   : "a2ui-app",
@@ -46,6 +47,10 @@ class AppComponent {
             this.modalSuccessError = error;
         });
     }
+
+    foo(e) {
+        console.log("foo", e);
+    }
 }
 
 bootstrap(AppComponent, [
@@ -53,7 +58,9 @@ bootstrap(AppComponent, [
     {provide: ng.PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
     {provide: ng.PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
-    {provide: ng.PLATFORM_DIRECTIVES, useValue: Dropdown, multi: true},
+    {provide: ng.PLATFORM_DIRECTIVES, useValue: DropdownDirective, multi: true},
+    {provide: ng.PLATFORM_DIRECTIVES, useValue: UploadDirective, multi: true},
+    {provide: ng.PLATFORM_DIRECTIVES, useValue: GlobalUploadDirective, multi: true},
     BOOTSTRAP_EVENTS_PLUGIN,
     f.provideForms(),
     f.disableDeprecatedForms(),

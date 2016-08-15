@@ -112,3 +112,23 @@
     </div>
 
 </section>
+
+<section class="container grid-960">
+
+    <h1>Upload</h1>
+
+    <div
+         style="width: 300px; height: 100px; display: flex; justify-content: center; align-items: center"
+         class="dropzone"
+         (a2GlobalFileIn)="gloablFileIn = $event"
+         (a2FileIn)="fileIn = ($event);"
+         [class.dropzone-global]="gloablFileIn && !fileIn"
+         [class.dropzone-local]="fileIn">
+
+        <div style="width: 100px; height: 50px; border: dotted;  display: flex; justify-content: center; align-items: center">
+            Drag File Here!
+        </div>
+
+    </div>
+
+</section>
