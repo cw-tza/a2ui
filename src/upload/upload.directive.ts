@@ -1,19 +1,34 @@
 import * as ng from "@angular/core";
 
-let uploadComponents: UploadDirective[] = [];
+@ng.Directive({
+    selector: "[a2Upload]",
+    outputs: ["onUpload: a2OnUpload"],
+    inputs: ["inputs: drop", "options: a2Upload"],
+})
+export class UploadDirective {
+    onUpload: ng.EventEmitter<any> = new ng.EventEmitter<any>();
+
+    set drop(event: any) {
+        console.log(event);
+        return false;
+    }
+}
+
+let uploadComponents: LocalUploadDirective[] = [];
 let globalDragStartListeners: GlobalUploadDirective[] = [];
 
 @ng.Directive({
     selector: "[a2FileIn]",
     outputs: ["fileIn: a2FileIn"],
 })
-export class UploadDirective implements ng.AfterContentInit, ng.OnDestroy {
+export class LocalUploadDirective implements ng.AfterContentInit, ng.OnDestroy {
     public mouseIsOver: boolean = false;
     public fileIn: ng.EventEmitter<boolean> = new ng.EventEmitter<boolean>();
 
     constructor(public ref: ng.ElementRef, public zone: ng.NgZone) {
-        ref.nativeElement.addEventListener("dragover", function (): boolean {
+        ref.nativeElement.addEventListener("dragover", function (event: any): boolean {
             // Element can handle drop event
+            event.preventDefault();
             return false;
         });
     }
@@ -56,7 +71,7 @@ document.addEventListener("dragover", (event: DragEvent) => {
     if (isDragSourceExternalFile(event)) {
         // Start drag file
         // console.log(event.target);
-        let directive: UploadDirective = getUploadDirective(event);
+        let directive: LocalUploadDirective = getLocalUploadDirective(event);
         if (directive !== undefined) {
 
             if (directive.mouseIsOver === false) {
@@ -87,7 +102,7 @@ document.addEventListener("dragleave", (event: DragEvent) => {
 
     if (isDragSourceExternalFile(event)) {
         // File drag leave
-        let directive: UploadDirective = uploadComponents.find((d) => {
+        let directive: LocalUploadDirective = uploadComponents.find((d) => {
             return event.target === d.ref.nativeElement;
         });
 
@@ -119,13 +134,39 @@ document.addEventListener("dragleave", (event: DragEvent) => {
     }, 80);
 });
 
+document.addEventListener("drop", (event: DragEvent) => {
+    window.clearTimeout(dragTimer);
+
+    if (isDragSourceExternalFile(event)) {
+
+        for (let i: number = 0; i < globalDragStartListeners.length; i++) {
+            let listener: GlobalUploadDirective = globalDragStartListeners[i];
+            listener.mouseIsOver = false;
+
+            listener.zone.run(() => {
+                listener.globalFileIn.emit(false);
+            });
+        }
+
+        for (let i: number = 0; i < uploadComponents.length; i++) {
+            let listener: LocalUploadDirective = uploadComponents[i];
+            listener.mouseIsOver = false;
+
+            listener.zone.run(() => {
+                listener.fileIn.emit(false);
+            });
+        }
+    }
+
+});
+
 function isDragSourceExternalFile(event: DragEvent): boolean {
     let dt: DataTransfer = event.dataTransfer;
     // tslint:disable-next-line
     return dt.types != null && ((<any>dt.types).indexOf ? (<any>dt.types).indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'));
 }
 
-function getUploadDirective(event: DragEvent): UploadDirective {
+function getLocalUploadDirective(event: DragEvent): LocalUploadDirective {
     return uploadComponents.find((d) => {
         return inSide(<HTMLElement>event.target, d.ref.nativeElement);
     });
@@ -141,3 +182,5 @@ function inSide(element: Node, container: HTMLElement): boolean {
     }
     return true;
 }
+
+export const UPLOAD_DIRECTIVES: ng.Type[] = [UploadDirective, LocalUploadDirective, GlobalUploadDirective];
