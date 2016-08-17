@@ -1,6 +1,4 @@
-import {
-    Component, Directive, TemplateRef, forwardRef, ContentChild, Input, Output, OnChanges, SimpleChanges
-} from "@angular/core";
+import {Component, Directive, TemplateRef, forwardRef, ContentChild, Input, Output, OnChanges, SimpleChanges} from "@angular/core";
 import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
 
 @Component({
@@ -12,36 +10,40 @@ export class Pagination implements OnChanges {
     @Input()
     public data: Array<any>;
     @Input()
-    public v: string = "var";
+    public varName: string = "var";
     @Input()
-    public pageSize: number = 10;
+    public availablePageSizes: number[];
+    @Input()
+    public selectedPageSize: number = 10;
     @Output()
-    pageChange: EventEmitter<number> = new EventEmitter();
-
+    public pageChange: EventEmitter<number> = new EventEmitter();
     @ContentChild(forwardRef(() => PageTemplate))
     private pageTemplate: PageTemplate;
 
     private currentPage: number = 0;
     private pages: Array<number>;
-    private context: any = {};
+    private pageContext: any = {};
 
-    ngOnChanges (changes: SimpleChanges): any {
-        if (changes.hasOwnProperty("data")) {
-            this.pages = Array(Math.ceil(this.data.length / this.pageSize));
+    ngOnChanges(changes: SimpleChanges): any {
+        if (changes.hasOwnProperty("data") || changes.hasOwnProperty("selectedPageSize")) {
+            this.rescalePages();
         }
     }
 
-    private prepareContext(): any {
-        this.context[this.v] = this.data.slice(this.currentPage * this.pageSize, this.currentPage * this.pageSize + this.pageSize);
-        return this.context;
+    private rescalePages(): void {
+        this.pages = Array(Math.ceil(this.data.length / this.selectedPageSize));
+        this.open(0);
     }
 
-    private openNext(): void {
-        if (this.hasNext()) this.currentPage++;
+    private preparePageContext(): any {
+        this.pageContext[this.varName] = this.data.slice(this.currentPage * this.selectedPageSize,
+            this.currentPage * this.selectedPageSize + this.selectedPageSize);
+        return this.pageContext;
     }
 
-    private openPrevious(): void {
-        if (this.hasPrev()) this.currentPage--;
+    private changePageSize(newPageSize: number): void {
+        this.selectedPageSize = newPageSize;
+        this.rescalePages();
     }
 
     private open(pageNumber: number): void {
@@ -49,12 +51,24 @@ export class Pagination implements OnChanges {
         this.pageChange.emit(this.currentPage);
     }
 
+    private openNext(): void {
+        if (this.hasNext()) {
+            this.open(this.currentPage + 1);
+        }
+    }
+
+    private openPrevious(): void {
+        if (this.hasPrev()) {
+            this.open(this.currentPage - 1);
+        }
+    }
+
     private openFirst(): void {
-        this.currentPage = 0;
+        this.open(0);
     }
 
     private openLast(): void {
-        this.currentPage = this.pages.length - 1;
+        this.open(this.pages.length - 1);
     }
 
     private hasNext(): boolean {

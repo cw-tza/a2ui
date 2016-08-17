@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 import {ViewChild, Component, AfterContentInit} from "@angular/core";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {OnInitDirective} from "./on-init/on-init.directive";
@@ -19,7 +21,7 @@ import {
 } from "./bootstrap/accordion/accordion.component";
 import {TABS_DIRECTIVES} from "./bootstrap/tabs/tabs.component";
 import {PAGINATION_DIRECTIVES} from "./bootstrap/pagination/pagination.component";
-import {DataTable, Column} from "./bootstrap/data-table/data-table.component";
+import {DataTable, Column, Header, Footer} from "./bootstrap/data-table/data-table.component";
 import {PLATFORM_DIRECTIVES} from "@angular/core";
 import {provideForms} from "@angular/forms";
 import {disableDeprecatedForms} from "@angular/forms";
@@ -28,7 +30,7 @@ import {disableDeprecatedForms} from "@angular/forms";
     selector: "a2ui-app",
     templateUrl: "src/app.component.html",
     providers: [Modal],
-    directives: [ComponentWithInputInsideComponent, ACCORDION_DIRECTIVES, Rating, Alert, TABS_DIRECTIVES, PAGINATION_DIRECTIVES, DataTable, Column]
+    directives: [ComponentWithInputInsideComponent, ACCORDION_DIRECTIVES, Rating, Alert, TABS_DIRECTIVES, PAGINATION_DIRECTIVES, DataTable, Column, Header, Footer]
 })
 class AppComponent implements AfterContentInit {
     copy: (source: HTMLElement | string) => cb.ClipboardResult = cb.copy;
@@ -166,11 +168,10 @@ class AppComponent implements AfterContentInit {
         {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
         {name: "Albert", surname: "Funftein", age: "23", nested: {value: "Egghead"}}
     ];
+    selectedRows: any= [this.tableData[0],this.tableData[2]];
+    rowSelection($event): any {
 
-    rowSelection($event: any): any {
-        console.log($event);
     }
-
 }
 
 bootstrap(AppComponent, [
@@ -183,3 +184,4 @@ bootstrap(AppComponent, [
     provideForms(),
     disableDeprecatedForms(),
 ]);
+/* tslint:enable */

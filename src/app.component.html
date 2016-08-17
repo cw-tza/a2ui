@@ -316,13 +316,13 @@
 
 <section class="container grid-960">
     <h1>Pagination</h1>
-    <pagination [pageSize]="pageSize" [data]="data">
 
+    <pagination [(selectedPageSize)]="pageSize" [data]="data" [availablePageSizes]="[1,5,10,15]">
         <template pageTemplate let-persons="var">
             <table class="table">
                 <tr>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
+                    <th>Firstname </th>
+                    <th>Lastname </th>
                     <th>Age</th>
                 </tr>
                 <tr *ngFor="let person of persons">
@@ -337,14 +337,23 @@
 
 <section class="container grid-960">
     <h1>Table</h1>
-    {{ tableData | json}}
-    <data-table [columnsDefinition]="columnsDefinition" [data]="tableData" (rowSelection)="rowSelection($event)">
 
+    <data-table [columnsDefinition]="columnsDefinition" [data]="tableData" (rowSelection)="rowSelection($event)" selectionMode="multi"
+                [(selection)]="selectedRows" [availablePageSizes]="[5,10,15]">
+        <header><div  class="text-center"><b><h3><i>Oddities</i></h3></b></div></header>
         <column header="Name" content="name" sortBy="name" filterBy="name" [editable]="true"></column>
-        <column header="Surname" content="surname" sortBy="surname" filterBy="surname"></column>
+        <column header="Surname" content="surname" sortBy="surname" filterBy="surname" ></column>
         <column header="Age" content="age" sortBy="age" filterBy="age"></column>
-        <column header="Nested" content="nested.value" sortBy="nested.value" filterBy="nested.value"
-                [editable]="true"></column>
-
+        <column header="Nested" content="nested.value" sortBy="nested.value" filterBy="nested.value" [editable]="true"></column>
+        <footer><i>Example footer content</i></footer>
     </data-table>
+
+    Selected Rows:
+    <br/>
+    {{selectedRows | json}}
+    <br/>
+    <br/>
+    Table data:
+    <br/>
+    {{ tableData | json}}
 </section>

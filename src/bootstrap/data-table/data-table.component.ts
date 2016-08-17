@@ -1,4 +1,4 @@
-import {Component, Input, Output, Directive, QueryList, forwardRef, ContentChildren, AfterContentInit} from "@angular/core";
+import {Component, Input, Output, Directive, QueryList, forwardRef, ContentChildren, AfterContentInit, ContentChild} from "@angular/core";
 import {NgClass} from "@angular/common";
 import {PAGINATION_DIRECTIVES} from "../pagination/pagination.component";
 import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
@@ -10,19 +10,31 @@ import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
 })
 export class DataTable implements AfterContentInit {
     pageSize: number = 5;
-    current: number = 2;
     @Input()
     public data: Array<any>;
+    @Input()
+    public selectionMode: string;
+    @Input()
+    public selection: Array<any> = [];
+    @Input()
+    public availablePageSizes: number[];
     @Output()
     public rowSelection: EventEmitter<any> = new EventEmitter<any>();
     @ContentChildren(forwardRef(() => Column))
     private columns: QueryList<Column>;
+    @ContentChild(forwardRef(() => Header))
+    private header: Header;
+    @ContentChild(forwardRef(() => Footer))
+    private footer: Footer;
 
     private dataToDisplay: Array<any>;
     private filters: any = {};
 
     ngAfterContentInit(): any {
         this.dataToDisplay = this.data.slice();
+        if (this.isSingleSelectionMode() && this.selection.length > 1) {
+            this.selection.splice(1, this.selection.length - 1);
+        }
     }
 
     private filter(): void {
@@ -47,7 +59,7 @@ export class DataTable implements AfterContentInit {
         if (a < b) return -1 * order;
         if (a > b) return order;
         return 0;
-    };
+    }
 
     private valueOf(root: any, path: string): any {
         let value: any = root;
@@ -57,8 +69,30 @@ export class DataTable implements AfterContentInit {
         return value;
     }
 
-    private emitSelectEvent(row: any): void {
-        this.rowSelection.emit(row);
+    private handleRowClick(row: any): void {
+        if (this.isOneClickSelectionMode()) {
+            this.select(row);
+        }
+    }
+
+    private handleRowDblClick(row: any): void {
+        if (this.isDoubleClickSelectionMode()) {
+            this.select(row);
+        }
+    }
+
+    private select(row: any): void {
+        if (this.isSingleSelectionMode()) {
+            let current: any = this.selection[0];
+            this.selection.splice(0, this.selection.length);
+            if (this.isDoubleClickSelectionMode() || current !== row) {
+                this.selection.push(row);
+            }
+        } else if (this.isMultiSelectionMode()) {
+            let index: number = this.selection.indexOf(row);
+            index !== -1 ? this.selection.splice(index, 1) : this.selection.push(row);
+        }
+        this.rowSelection.emit(this.selection);
     }
 
     private edit(event: any, column: Column, row: any): void {
@@ -68,6 +102,39 @@ export class DataTable implements AfterContentInit {
             let path: string = paths.shift();
             paths.length !== 0 ? value = value[path] : value[path] = event;
         }
+    }
+
+    private isSingleSelectionMode(): boolean {
+        return this.selectionMode === "single" || this.selectionMode === "dblclick";
+    }
+
+    private isMultiSelectionMode(): boolean {
+        return this.selectionMode === "multi";
+    }
+
+    private isDoubleClickSelectionMode(): boolean {
+        return this.selectionMode === "dblclick";
+    }
+
+    private isSelectionMode(): boolean {
+        return this.isOneClickSelectionMode() || this.isDoubleClickSelectionMode();
+    }
+
+    private isOneClickSelectionMode(): boolean {
+        return this.selectionMode === "multi" || this.selectionMode === "single";
+    }
+
+    private getTableStyle(): string {
+        let tableClasses: string = "table";
+
+        if (this.isSelectionMode()) {
+            tableClasses += " table-hover";
+        }
+        return tableClasses;
+    }
+
+    private isSelected(row: any): boolean {
+        return this.isOneClickSelectionMode() ? this.selection.indexOf(row) !== -1 : false;
     }
 }
 
@@ -89,3 +156,15 @@ export class Column {
 
     public order: number = 1;
 }
+
+@Component({
+    selector: "header",
+    template: "<ng-content></ng-content>"
+})
+export class Header {}
+
+@Component({
+    selector: "footer",
+    template: "<ng-content></ng-content>"
+})
+export class Footer {}

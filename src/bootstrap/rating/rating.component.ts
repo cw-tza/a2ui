@@ -7,11 +7,16 @@ export class Rating implements OnInit {
     range: number[] = [];
     lastSelectedRate: number;
 
-    @Input() rate: number;
-    @Input() max: number = 5;
-    @Input() disabled: boolean = false;
-    @Output() rateChange: EventEmitter<number> = new EventEmitter();
-    @Output() hoover: EventEmitter<number> = new EventEmitter();
+    @Input()
+    rate: number;
+    @Input()
+    max: number = 5;
+    @Input()
+    disabled: boolean = false;
+    @Output()
+    rateChange: EventEmitter<number> = new EventEmitter();
+    @Output()
+    hoover: EventEmitter<number> = new EventEmitter();
 
     ngOnInit(): any {
         this.range = Array(this.max);
