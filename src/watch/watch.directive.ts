@@ -1,12 +1,12 @@
-import * as ng from "@angular/core";
+import {Directive, EventEmitter} from "@angular/core";
 
-@ng.Directive({
+@Directive({
     inputs  : ["watch: a2Watch"],
     outputs : ["onChange: a2Change"],
     selector: "[a2Watch]",
 })
 export class WatchDirective {
-    onChange: ng.EventEmitter<any> = new ng.EventEmitter<any>();
+    onChange: EventEmitter<any> = new EventEmitter<any>();
     private previousValue: any;
     private lastUpdateTime: Date;
     private first: boolean = true;

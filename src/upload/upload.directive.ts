@@ -1,14 +1,14 @@
-import * as ng from "@angular/core";
+import {Directive, AfterContentInit, OnDestroy, ElementRef} from "@angular/core";
 
 let uploadComponents: UploadDirective[] = [];
 
-@ng.Directive({
+@Directive({
     selector: "a2Upload, [a2Upload]"
 })
-export class UploadDirective implements ng.AfterContentInit, ng.OnDestroy {
+export class UploadDirective implements AfterContentInit, OnDestroy {
     public mouseIsOver: boolean = false;
 
-    constructor (public ref: ng.ElementRef) {}
+    constructor (public ref: ElementRef) {}
 
     ngAfterContentInit (): void {
         uploadComponents.push(this);
