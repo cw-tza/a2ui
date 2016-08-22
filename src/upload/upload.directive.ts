@@ -1,31 +1,72 @@
-import * as ng from "@angular/core";
+import {Directive, EventEmitter, AfterContentInit, OnDestroy, NgZone, Type, ElementRef} from "@angular/core";
+import {Http, Headers} from "@angular/http";
 
-@ng.Directive({
+@Directive({
     selector: "[a2Upload]",
     outputs: ["onUpload: a2OnUpload"],
-    inputs: ["inputs: drop", "options: a2Upload"],
+    inputs: ["options: a2Upload"],
+    host: {
+        "(drop)": "doUpload($event)"
+    }
 })
 export class UploadDirective {
-    onUpload: ng.EventEmitter<any> = new ng.EventEmitter<any>();
+    private onUpload: EventEmitter<any> = new EventEmitter<any>();
+    private options: any = {};
 
-    set drop(event: any) {
-        console.log(event);
-        return false;
+    constructor(private http: Http) {}
+
+    doUpload(event: DragEvent) {
+        if (!event.dataTransfer || !event.dataTransfer.files ||
+            event.dataTransfer.files.length <= 0) {
+            return;
+        }
+        let files: FileList = event.dataTransfer.files;
+
+        if (files.length > this.options.maxFiles) {
+            let filesCopy: any = [];
+            filesCopy.length = this.options.maxFiles;
+            filesCopy.item = function (index: number) {
+                return index > this.options.maxFiles ? undefined : event.dataTransfer.files.item(index);
+            };
+            for (let i = 0; i < this.options.maxFiles; i++) {
+                filesCopy[i] = event.dataTransfer.files[i];
+            }
+            files = <FileList> filesCopy;
+        }
+
+        let formData: FormData = new FormData();
+
+        for (let i = 0; i < files.length; files++) {
+            formData.append(this.options.name ? this.options.name(i, files.item(i)) : "upload-" + i, files.item(i));
+        }
+
+        this.http.request(this.options.url, {
+            method: this.options.method || "POST",
+            headers: this.options.headers || UploadDirective.defaultHeaders(),
+            search: this.options.search || undefined,
+            body: formData,
+        });
+    }
+
+    private static defaultHeaders() {
+        let headers: Headers = new Headers();
+        headers.append("Content-Type", "multipart/form-data");
+        return new Headers();
     }
 }
 
 let uploadComponents: LocalUploadDirective[] = [];
 let globalDragStartListeners: GlobalUploadDirective[] = [];
 
-@ng.Directive({
+@Directive({
     selector: "[a2FileIn]",
     outputs: ["fileIn: a2FileIn"],
 })
-export class LocalUploadDirective implements ng.AfterContentInit, ng.OnDestroy {
+export class LocalUploadDirective implements AfterContentInit, OnDestroy {
     public mouseIsOver: boolean = false;
-    public fileIn: ng.EventEmitter<boolean> = new ng.EventEmitter<boolean>();
+    public fileIn: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    constructor(public ref: ng.ElementRef, public zone: ng.NgZone) {
+    constructor(public ref: ElementRef, public zone: NgZone) {
         ref.nativeElement.addEventListener("dragover", function (event: any): boolean {
             // Element can handle drop event
             event.preventDefault();
@@ -42,15 +83,15 @@ export class LocalUploadDirective implements ng.AfterContentInit, ng.OnDestroy {
     };
 }
 
-@ng.Directive({
+@Directive({
     selector: "[a2GlobalFileIn]",
     outputs: ["globalFileIn: a2GlobalFileIn"],
 })
-export class GlobalUploadDirective implements ng.AfterContentInit, ng.OnDestroy {
+export class GlobalUploadDirective implements AfterContentInit, OnDestroy {
     public mouseIsOver: boolean = false;
-    public globalFileIn: ng.EventEmitter<boolean> = new ng.EventEmitter<boolean>();
+    public globalFileIn: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    constructor(public zone: ng.NgZone) {
+    constructor(public zone: NgZone) {
     }
 
     ngAfterContentInit(): void {
@@ -183,4 +224,4 @@ function inSide(element: Node, container: HTMLElement): boolean {
     return true;
 }
 
-export const UPLOAD_DIRECTIVES: ng.Type[] = [UploadDirective, LocalUploadDirective, GlobalUploadDirective];
+export const UPLOAD_DIRECTIVES: Type[] = [UploadDirective, LocalUploadDirective, GlobalUploadDirective];
