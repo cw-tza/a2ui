@@ -1,4 +1,4 @@
-import * as ng from "@angular/core";
+import {Injectable, ViewContainerRef, Injector, ComponentResolver, ApplicationRef, ComponentRef, Type, ComponentFactory, ReflectiveInjector} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/share";
@@ -6,13 +6,13 @@ import "rxjs/add/operator/cache";
 
 type ModalBackdrop = "static" | boolean;
 
-@ng.Injectable()
+@Injectable()
 export class Modal {
-    private rootRef: ng.ViewContainerRef;
+    private rootRef: ViewContainerRef;
 
-    constructor (private injector: ng.Injector,
-                 private componentResolver: ng.ComponentResolver,
-                 private appRef: ng.ApplicationRef) {}
+    constructor (private injector: Injector,
+                 private componentResolver: ComponentResolver,
+                 private appRef: ApplicationRef) {}
 
     create ({
         component, providers = [],
@@ -27,7 +27,7 @@ export class Modal {
         let modalActions: ModalActions = new ModalActions(resultSubject);
         providers.push({provide: ModalActions, useValue: modalActions});
 
-        this.createComponent(component, providers).then((componentRef: ng.ComponentRef<any>) => {
+        this.createComponent(component, providers).then((componentRef: ComponentRef<any>) => {
             let modalParent: Element;
 
             if (modalParentSelector !== undefined) {
@@ -82,26 +82,26 @@ export class Modal {
         return instanceSubject;
     }
 
-    private createComponent (component: ng.Type|string, providers: Array<ng.Type | any[] | any>): Promise<ng.ComponentRef<any>> {
+    private createComponent (component: Type|string, providers: Array<Type | any[] | any>): Promise<ComponentRef<any>> {
         return this.componentResolver.resolveComponent(component)
-            .then((componentFactory: ng.ComponentFactory<any>) => {
-                let injector: ng.ReflectiveInjector = ng.ReflectiveInjector.fromResolvedProviders(
-                    ng.ReflectiveInjector.resolve(providers), this.injector);
+            .then((componentFactory: ComponentFactory<any>) => {
+                let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
+                    ReflectiveInjector.resolve(providers), this.injector);
                 return this.getAppRef().createComponent(componentFactory, undefined, injector);
             });
     };
 
-    private getAppRef (): ng.ViewContainerRef {
+    private getAppRef (): ViewContainerRef {
         // Hack, until fix:
         // https://github.com/angular/angular/issues/9293
         // tslint:disable-next-line
-        return <ng.ViewContainerRef>this.appRef["_rootComponents"][0]["_hostElement"].vcRef;
+        return <ViewContainerRef>this.appRef["_rootComponents"][0]["_hostElement"].vcRef;
     }
 }
 
 export interface ModalOptions {
-    component: ng.Type|string;
-    providers?: Array<ng.Type | any[] | any>;
+    component: Type|string;
+    providers?: Array<Type | any[] | any>;
     modalParentSelector?: string;
     backdrop?: ModalBackdrop;
     show?: boolean;

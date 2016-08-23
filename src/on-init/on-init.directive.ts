@@ -1,11 +1,11 @@
-import * as ng from "@angular/core";
+import {Directive, OnInit, EventEmitter} from "@angular/core";
 
-@ng.Directive({
+@Directive({
     outputs: ["onInitChange: a2OnInit"],
     selector: "[a2OnInit]",
 })
-export class OnInitDirective implements ng.OnInit {
-    onInitChange: ng.EventEmitter<InitEvent> = new ng.EventEmitter<InitEvent>();
+export class OnInitDirective implements OnInit {
+    onInitChange: EventEmitter<InitEvent> = new EventEmitter<InitEvent>();
 
     ngOnInit (): void {
         this.onInitChange.emit({time: new Date()});

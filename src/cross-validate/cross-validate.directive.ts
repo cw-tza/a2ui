@@ -1,15 +1,15 @@
-import * as ng from "@angular/core";
-import * as f from "@angular/forms";
+import {ControlContainer} from "@angular/forms";
+import {forwardRef, Directive, SkipSelf} from "@angular/core";
 
-@ng.Directive({
+@Directive({
     selector: "cross-validate,[crossValidate]",
     providers: [{
-        provide    : f.ControlContainer,
-        useExisting: ng.forwardRef(() => CrossValidateDirective)
+        provide    : ControlContainer,
+        useExisting: forwardRef(() => CrossValidateDirective)
     }]
 })
-export class CrossValidateDirective extends f.ControlContainer {
-    constructor (@ng.SkipSelf() public proxied: f.ControlContainer) { super(); }
+export class CrossValidateDirective extends ControlContainer {
+    constructor (@SkipSelf() public proxied: ControlContainer) { super(); }
 
     get control (): any { return this.proxied.control; }
 

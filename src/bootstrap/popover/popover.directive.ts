@@ -1,22 +1,22 @@
-import * as ng from "@angular/core";
+import {Directive, Type, ComponentRef, ViewContainerRef, ComponentResolver, Injector, ComponentFactory, ReflectiveInjector} from "@angular/core";
 
 // tslint:disable-next-line
 const $: any = window["$"];
 
-@ng.Directive({
+@Directive({
     selector: "[a2Popover]",
     exportAs: "popover",
     inputs: ["options: a2Popover"]
 })
 export class PopoverDirective {
-    options: {type?: ng.Type, provides?: Array<any>, bs?: any};
+    options: {type?: Type, provides?: Array<any>, bs?: any};
     private shown: boolean = false;
     private popover: any;
-    private component: ng.ComponentRef<any>;
+    private component: ComponentRef<any>;
 
-    constructor (private vcr: ng.ViewContainerRef,
-                 private componentResolver: ng.ComponentResolver,
-                 private injector: ng.Injector) {}
+    constructor (private vcr: ViewContainerRef,
+                 private componentResolver: ComponentResolver,
+                 private injector: Injector) {}
 
     toggle (): void {
         if (this.shown) {
@@ -72,20 +72,20 @@ export class PopoverDirective {
             return Promise.resolve(this.options.bs.content);
         }
         return this.factory(this.options.type, this.options.provides)
-            .then((component: ng.ComponentRef<any>) => {
+            .then((component: ComponentRef<any>) => {
                 this.component = component;
                 return component.location.nativeElement;
             });
     }
 
-    private factory (component: ng.Type|string, providers: Array<any> = []): Promise<ng.ComponentRef<any>> {
+    private factory (component: Type|string, providers: Array<any> = []): Promise<ComponentRef<any>> {
         if (!Array.isArray(providers)) {
             providers = [providers];
         }
         return this.componentResolver.resolveComponent(component)
-            .then((componentFactory: ng.ComponentFactory<any>) => {
-                let injector: ng.ReflectiveInjector = ng.ReflectiveInjector.fromResolvedProviders(
-                    ng.ReflectiveInjector.resolve(providers), this.injector);
+            .then((componentFactory: ComponentFactory<any>) => {
+                let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
+                    ReflectiveInjector.resolve(providers), this.injector);
                 return this.vcr.createComponent(componentFactory, undefined, injector);
             });
     }
