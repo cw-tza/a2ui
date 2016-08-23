@@ -1,5 +1,5 @@
 import {Directive, EventEmitter, AfterContentInit, OnDestroy, NgZone, Type, ElementRef} from "@angular/core";
-import {Http, Headers} from "@angular/http";
+import {Http, Headers, Response} from "@angular/http";
 
 @Directive({
     selector: "[a2Upload]",
@@ -10,12 +10,13 @@ import {Http, Headers} from "@angular/http";
     }
 })
 export class UploadDirective {
-    private onUpload: EventEmitter<any> = new EventEmitter<any>();
+    private onUpload: EventEmitter<any> = new EventEmitter<Response>();
     private options: any = {};
 
-    constructor(private http: Http) {}
+    constructor(private http: Http) {
+    }
 
-    doUpload(event: DragEvent) {
+    doUpload(event: DragEvent): void {
         if (!event.dataTransfer || !event.dataTransfer.files ||
             event.dataTransfer.files.length <= 0) {
             return;
@@ -25,10 +26,12 @@ export class UploadDirective {
         if (files.length > this.options.maxFiles) {
             let filesCopy: any = [];
             filesCopy.length = this.options.maxFiles;
-            filesCopy.item = function (index: number) {
+
+            filesCopy.item = (index: number): File => {
                 return index > this.options.maxFiles ? undefined : event.dataTransfer.files.item(index);
             };
-            for (let i = 0; i < this.options.maxFiles; i++) {
+
+            for (let i: number = 0; i < this.options.maxFiles; i++) {
                 filesCopy[i] = event.dataTransfer.files[i];
             }
             files = <FileList> filesCopy;
@@ -36,8 +39,8 @@ export class UploadDirective {
 
         let formData: FormData = new FormData();
 
-        for (let i = 0; i < files.length; files++) {
-            formData.append(this.options.name ? this.options.name(i, files.item(i)) : "upload-" + i, files.item(i));
+        for (let i: number = 0; i < files.length; i++) {
+            formData.append(this.options.name ? this.options.name(i, files.item(i)) : "file-" + i, files.item(i));
         }
 
         this.http.request(this.options.url, {
@@ -45,10 +48,12 @@ export class UploadDirective {
             headers: this.options.headers || UploadDirective.defaultHeaders(),
             search: this.options.search || undefined,
             body: formData,
+        }).subscribe((response: Response) => {
+            this.onUpload.emit(response);
         });
     }
 
-    private static defaultHeaders() {
+    private static defaultHeaders(): Headers {
         let headers: Headers = new Headers();
         headers.append("Content-Type", "multipart/form-data");
         return new Headers();
@@ -111,7 +116,6 @@ document.addEventListener("dragover", (event: DragEvent) => {
 
     if (isDragSourceExternalFile(event)) {
         // Start drag file
-        // console.log(event.target);
         let directive: LocalUploadDirective = getLocalUploadDirective(event);
         if (directive !== undefined) {
 

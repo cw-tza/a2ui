@@ -370,7 +370,7 @@
             (a2FileIn)="fileIn = ($event);"
             [class.dropzone-global]="globalFileIn && !fileIn"
             [class.dropzone-local]="fileIn" (drop)="$event.preventDefault()"
-            [a2Upload]="{url: '/upload/path'}" (a2OnUpload)="state = $event">
+            [a2Upload]="{url: '/upload/path'}" (a2OnUpload)="response = $event">
 
         <div class="sqbrackets"
              style="display: flex; justify-content: center; align-items: center"
