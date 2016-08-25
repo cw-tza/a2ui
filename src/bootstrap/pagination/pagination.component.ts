@@ -16,7 +16,7 @@ export class Pagination implements OnChanges {
     @Input()
     public selectedPageSize: number = 10;
     @Output()
-    public pageChange: EventEmitter<number> = new EventEmitter();
+    public pageChange: EventEmitter<number> = new EventEmitter<number>();
     @ContentChild(forwardRef(() => PageTemplate))
     private pageTemplate: PageTemplate;
 

@@ -14,9 +14,9 @@ export class Rating implements OnInit {
     @Input()
     disabled: boolean = false;
     @Output()
-    rateChange: EventEmitter<number> = new EventEmitter();
+    rateChange: EventEmitter<number> = new EventEmitter<number>();
     @Output()
-    hoover: EventEmitter<number> = new EventEmitter();
+    hoover: EventEmitter<number> = new EventEmitter<number>();
 
     ngOnInit(): any {
         this.range = Array(this.max);
