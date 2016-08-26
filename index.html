@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Angular 2 QuickStart</title>
+    <title>a2ui QuickStart</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
@@ -28,6 +28,7 @@
         body {
             margin-bottom: 22rem;
         }
+
         .container {
             margin-left: auto;
             margin-right: auto;
@@ -35,8 +36,61 @@
             padding-right: 1rem;
             width: 100%;
         }
+
         .grid-960 {
             width: 98rem;
+        }
+
+        .dropzone {
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .dropzone-global {
+            border: 2px dashed #0057A4;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .dropzone-local {
+            border: 2px solid #0057A4;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .sqbrackets:before {
+            content: " ";
+            border-left: 2px solid #666;
+            border-top: 2px solid #666;
+            border-bottom: 2px solid #666;
+            margin-right: 10px;
+            padding: 10px 5px 10px 5px;
+        }
+
+        .sqbrackets:after {
+            content: " ";
+            padding: 10px 5px 10px 5px;
+            border-right: 2px solid #666;
+            border-top: 2px solid #666;
+            border-bottom: 2px solid #666;
+            margin-left: 10px;
+        }
+
+        .sqbrackets-global.sqbrackets:before {
+            border-color: #0057A4;
+        }
+
+        .sqbrackets-global.sqbrackets:after {
+            border-color: #0057A4;
+        }
+
+        .sqbrackets-local.sqbrackets:before {
+            border-color: #a40800;
+        }
+
+        .sqbrackets-local.sqbrackets:after {
+            border-color: #A40800;
         }
     </style>
 </head>

@@ -6,7 +6,7 @@ const $: any = window["$"];
 @ng.Directive({
     selector: "[a2Dropdown]"
 })
-export class Dropdown {
+export class DropdownDirective {
 
     constructor (ref: ng.ElementRef) {
         // tslint:disable-next-line

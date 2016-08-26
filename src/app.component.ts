@@ -11,7 +11,7 @@ import {CrossValidateDirective} from "./cross-validate/cross-validate.directive"
 import {ComponentWithInputInsideComponent} from "./examples/component-with-input-inside.component";
 import {PopoverDirective} from "./bootstrap/popover/popover.directive";
 import {ComponentInsidePopoverComponent} from "./examples/component-inside-popover.component";
-import {Dropdown} from "./bootstrap/dropdown/dropdown";
+import {DropdownDirective} from "./bootstrap/dropdown/dropdown.directive";
 import {BOOTSTRAP_EVENTS_PLUGIN} from "./bootstrap/bootstrap_events";
 import {Rating} from "./bootstrap/rating/rating.component";
 import {Alert} from "./bootstrap/alert/alert.component";
@@ -25,6 +25,8 @@ import {DataTable, Column, Header, Footer} from "./bootstrap/data-table/data-tab
 import {PLATFORM_DIRECTIVES} from "@angular/core";
 import {provideForms} from "@angular/forms";
 import {disableDeprecatedForms} from "@angular/forms";
+import {UPLOAD_DIRECTIVES} from "./upload/upload.directive";
+import {HTTP_PROVIDERS} from "@angular/http";
 
 @Component({
     selector: "a2ui-app",
@@ -179,7 +181,9 @@ bootstrap(AppComponent, [
     {provide: PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
     {provide: PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
     {provide: PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
-    {provide: PLATFORM_DIRECTIVES, useValue: Dropdown, multi: true},
+    {provide: PLATFORM_DIRECTIVES, useValue: DropdownDirective, multi: true},
+    {provide: PLATFORM_DIRECTIVES, useValue: UPLOAD_DIRECTIVES, multi: true},
+    HTTP_PROVIDERS,
     BOOTSTRAP_EVENTS_PLUGIN,
     provideForms(),
     disableDeprecatedForms(),
