@@ -1,7 +1,6 @@
-import {Component, Input, Output, Directive, QueryList, forwardRef, ContentChildren, AfterContentInit, ContentChild} from "@angular/core";
+import {Component, Input, Output, Directive, QueryList, forwardRef, ContentChildren, AfterContentInit, ContentChild, EventEmitter} from "@angular/core";
 import {NgClass} from "@angular/common";
 import {PAGINATION_DIRECTIVES} from "../pagination/pagination.component";
-import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
 
 @Component({
     selector: "data-table",

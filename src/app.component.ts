@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import {ViewChild, Component, AfterContentInit} from "@angular/core";
+import {ViewChild, Component, AfterContentInit, PLATFORM_DIRECTIVES} from "@angular/core";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {OnInitDirective} from "./on-init/on-init.directive";
 import * as cb from "./clipboard/clipbard";
@@ -16,25 +16,23 @@ import {BOOTSTRAP_EVENTS_PLUGIN} from "./bootstrap/bootstrap_events";
 import {Rating} from "./bootstrap/rating/rating.component";
 import {Alert} from "./bootstrap/alert/alert.component";
 import {
-    ACCORDION_DIRECTIVES, AccordionGroupState, AccordionNavigationEvent,
+    ACCORDION_DIRECTIVES,
+    AccordionGroupState,
+    AccordionNavigationEvent,
     Accordion
 } from "./bootstrap/accordion/accordion.component";
 import {TABS_DIRECTIVES} from "./bootstrap/tabs/tabs.component";
 import {PAGINATION_DIRECTIVES} from "./bootstrap/pagination/pagination.component";
 import {DataTable, Column, Header, Footer} from "./bootstrap/data-table/data-table.component";
-import {PLATFORM_DIRECTIVES} from "@angular/core";
-import {provideForms} from "@angular/forms";
-import {disableDeprecatedForms} from "@angular/forms";
+import {provideForms, disableDeprecatedForms} from "@angular/forms";
 import {UPLOAD_DIRECTIVES} from "./upload/upload.directive";
 import {HTTP_PROVIDERS} from "@angular/http";
 
 @Component({
     selector: "a2ui-app",
-    templateUrl: "src/app.component.html",
-    providers: [Modal],
-    directives: [ComponentWithInputInsideComponent, ACCORDION_DIRECTIVES, Rating, Alert, TABS_DIRECTIVES, PAGINATION_DIRECTIVES, DataTable, Column, Header, Footer]
+    templateUrl: "src/app.component.html"
 })
-class AppComponent implements AfterContentInit {
+export class AppComponent implements AfterContentInit {
     copy: (source: HTMLElement | string) => cb.ClipboardResult = cb.copy;
     cut: (source: HTMLElement | string) => cb.ClipboardResult = cb.cut;
     modalSuccessResult: any;
@@ -170,22 +168,9 @@ class AppComponent implements AfterContentInit {
         {name: "Han", surname: "Ford", age: "83", nested: {value: "Pirate"}},
         {name: "Albert", surname: "Funftein", age: "23", nested: {value: "Egghead"}}
     ];
-    selectedRows: any= [this.tableData[0],this.tableData[2]];
+    selectedRows: any = [this.tableData[0], this.tableData[2]];
+
     rowSelection($event): any {
 
     }
 }
-
-bootstrap(AppComponent, [
-    {provide: PLATFORM_DIRECTIVES, useValue: OnInitDirective, multi: true},
-    {provide: PLATFORM_DIRECTIVES, useValue: WatchDirective, multi: true},
-    {provide: PLATFORM_DIRECTIVES, useValue: CrossValidateDirective, multi: true},
-    {provide: PLATFORM_DIRECTIVES, useValue: PopoverDirective, multi: true},
-    {provide: PLATFORM_DIRECTIVES, useValue: DropdownDirective, multi: true},
-    {provide: PLATFORM_DIRECTIVES, useValue: UPLOAD_DIRECTIVES, multi: true},
-    HTTP_PROVIDERS,
-    BOOTSTRAP_EVENTS_PLUGIN,
-    provideForms(),
-    disableDeprecatedForms(),
-]);
-/* tslint:enable */

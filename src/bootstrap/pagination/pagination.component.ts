@@ -1,5 +1,15 @@
-import {Component, Directive, TemplateRef, forwardRef, ContentChild, Input, Output, OnChanges, SimpleChanges} from "@angular/core";
-import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
+import {
+    Component,
+    Directive,
+    TemplateRef,
+    forwardRef,
+    ContentChild,
+    Input,
+    Output,
+    OnChanges,
+    SimpleChanges,
+    EventEmitter
+} from "@angular/core";
 
 @Component({
     selector: "pagination",

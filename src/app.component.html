@@ -146,7 +146,7 @@
                 </tr>
             </table>
         </accordion-group>
-        <accordion-group [valid]="test2" [disabled]="true" header="Two">
+        <accordion-group [disabled]="true" header="Two">
             <table>
                 <tr>
                     <th>Firstname</th>
@@ -338,7 +338,7 @@
 <section class="container grid-960">
     <h1>Table</h1>
 
-    <data-table [columnsDefinition]="columnsDefinition" [data]="tableData" (rowSelection)="rowSelection($event)" selectionMode="multi"
+    <data-table [data]="tableData" (rowSelection)="rowSelection($event)" selectionMode="multi"
                 [(selection)]="selectedRows" [availablePageSizes]="[5,10,15]">
         <header><div  class="text-center"><b><h3><i>Oddities</i></h3></b></div></header>
         <column header="Name" content="name" sortBy="name" filterBy="name" [editable]="true"></column>

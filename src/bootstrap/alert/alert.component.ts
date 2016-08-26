@@ -1,5 +1,4 @@
-import {Component, Input, Output, OnInit} from "@angular/core";
-import {EventEmitter} from "@angular/platform-browser-dynamic/src/facade/async";
+import {Component, Input, Output, OnInit, EventEmitter} from "@angular/core";
 
 @Component({
     selector: "alert",

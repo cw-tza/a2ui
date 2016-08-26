@@ -1,8 +1,19 @@
-import {Injectable, ViewContainerRef, Injector, ComponentResolver, ApplicationRef, ComponentRef, Type, ComponentFactory, ReflectiveInjector} from "@angular/core";
+import {
+    Injectable,
+    ViewContainerRef,
+    Injector,
+    ApplicationRef,
+    ComponentRef,
+    Type,
+    ComponentFactory,
+    ReflectiveInjector,
+    ComponentFactoryResolver
+} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/cache";
+import {ConcreteType} from "@angular/core/src/facade/lang";
 
 type ModalBackdrop = "static" | boolean;
 
@@ -10,11 +21,12 @@ type ModalBackdrop = "static" | boolean;
 export class Modal {
     private rootRef: ViewContainerRef;
 
-    constructor (private injector: Injector,
-                 private componentResolver: ComponentResolver,
-                 private appRef: ApplicationRef) {}
+    constructor(private injector: Injector,
+                private componentResolver: ComponentFactoryResolver,
+                private appRef: ApplicationRef) {
+    }
 
-    create ({
+    create({
         component, providers = [],
         modalParentSelector,
         keyboard = true,
@@ -72,26 +84,24 @@ export class Modal {
 
             instanceSubject.next({
                 jqueryElement: popupModal,
-                result       : resultSubject,
-                discard      : modalActions.discard,
-                close        : modalActions.close,
-                error        : modalActions.error
+                result: resultSubject,
+                discard: modalActions.discard,
+                close: modalActions.close,
+                error: modalActions.error
             });
         });
 
         return instanceSubject;
     }
 
-    private createComponent (component: Type|string, providers: Array<Type | any[] | any>): Promise<ComponentRef<any>> {
-        return this.componentResolver.resolveComponent(component)
-            .then((componentFactory: ComponentFactory<any>) => {
-                let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
-                    ReflectiveInjector.resolve(providers), this.injector);
-                return this.getAppRef().createComponent(componentFactory, undefined, injector);
-            });
+    private createComponent(component: ConcreteType<any>, providers: Array<Type | any[] | any>): Promise<ComponentRef<any>> {
+        let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
+            ReflectiveInjector.resolve(providers), this.injector);
+        let componentFactory: ComponentFactory<any> = this.componentResolver.resolveComponentFactory(component);
+        return Promise.resolve(this.getAppRef().createComponent(componentFactory, undefined, injector))
     };
 
-    private getAppRef (): ViewContainerRef {
+    private getAppRef(): ViewContainerRef {
         // Hack, until fix:
         // https://github.com/angular/angular/issues/9293
         // tslint:disable-next-line
@@ -100,7 +110,7 @@ export class Modal {
 }
 
 export interface ModalOptions {
-    component: Type|string;
+    component: ConcreteType<any>;
     providers?: Array<Type | any[] | any>;
     modalParentSelector?: string;
     backdrop?: ModalBackdrop;
@@ -117,19 +127,20 @@ export interface ModalInstance {
 }
 
 export class ModalActions {
-    constructor (private sub: Subject<any>,
-                 public destroyed: boolean = false) {}
+    constructor(private sub: Subject<any>,
+                public destroyed: boolean = false) {
+    }
 
-    discard (): void {
+    discard(): void {
         this.sub.complete();
     };
 
-    close (val: any): void {
+    close(val: any): void {
         this.sub.next(val);
         this.sub.complete();
     };
 
-    error (val: any): void {
+    error(val: any): void {
         this.sub.error(val);
     }
 }
