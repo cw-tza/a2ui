@@ -98,7 +98,7 @@ export class Modal {
         let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
             ReflectiveInjector.resolve(providers), this.injector);
         let componentFactory: ComponentFactory<any> = this.componentResolver.resolveComponentFactory(component);
-        return Promise.resolve(this.getAppRef().createComponent(componentFactory, undefined, injector))
+        return Promise.resolve(this.getAppRef().createComponent(componentFactory, undefined, injector));
     };
 
     private getAppRef(): ViewContainerRef {
