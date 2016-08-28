@@ -4,12 +4,12 @@ import {FormsModule} from "@angular/forms";
 import {AppComponent} from "./app.component";
 import {HttpModule} from "@angular/http";
 import {A2uiModule} from "./a2ui.module";
-import {MyModalComponent} from "./examples/MyModal.component";
+import {ExamplesModule} from "./examples/examples.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, HttpModule, A2uiModule],
-    declarations: [AppComponent, MyModalComponent],
-    entryComponents: [MyModalComponent],
+    imports: [BrowserModule, FormsModule, HttpModule, A2uiModule, ExamplesModule, RouterModule],
+    declarations: [AppComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {

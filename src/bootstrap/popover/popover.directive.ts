@@ -1,4 +1,8 @@
-import {Directive, Type, ComponentRef, ViewContainerRef, ComponentResolver, Injector, ComponentFactory, ReflectiveInjector} from "@angular/core";
+import {
+    Directive, Type, ComponentRef, ViewContainerRef, Injector, ComponentFactory,
+    ReflectiveInjector, ComponentFactoryResolver
+} from "@angular/core";
+import {ConcreteType} from "@angular/core/src/facade/lang";
 
 // tslint:disable-next-line
 const $: any = window["$"];
@@ -9,16 +13,17 @@ const $: any = window["$"];
     inputs: ["options: a2Popover"]
 })
 export class PopoverDirective {
-    options: {type?: Type, provides?: Array<any>, bs?: any};
+    options: {type?: ConcreteType<any>, provides?: Array<any>, bs?: any};
     private shown: boolean = false;
     private popover: any;
     private component: ComponentRef<any>;
 
-    constructor (private vcr: ViewContainerRef,
-                 private componentResolver: ComponentResolver,
-                 private injector: Injector) {}
+    constructor(private vcr: ViewContainerRef,
+                private componentResolver: ComponentFactoryResolver,
+                private injector: Injector) {
+    }
 
-    toggle (): void {
+    toggle(): void {
         if (this.shown) {
             this.destroy();
         } else {
@@ -26,7 +31,7 @@ export class PopoverDirective {
         }
     }
 
-    show (): void {
+    show(): void {
         if (this.shown) {
             return;
         }
@@ -58,7 +63,7 @@ export class PopoverDirective {
         });
     }
 
-    destroy (): void {
+    destroy(): void {
         if (!this.shown) {
             return;
         }
@@ -67,7 +72,7 @@ export class PopoverDirective {
         this.popover.popover("destroy");
     }
 
-    createComponent (): Promise<any> {
+    createComponent(): Promise<any> {
         if (this.options.bs.content) {
             return Promise.resolve(this.options.bs.content);
         }
@@ -78,15 +83,13 @@ export class PopoverDirective {
             });
     }
 
-    private factory (component: Type|string, providers: Array<any> = []): Promise<ComponentRef<any>> {
+    private factory(component: ConcreteType<any>, providers: Array<Type | any[] | any> = []): Promise<ComponentRef<any>> {
         if (!Array.isArray(providers)) {
             providers = [providers];
         }
-        return this.componentResolver.resolveComponent(component)
-            .then((componentFactory: ComponentFactory<any>) => {
-                let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
-                    ReflectiveInjector.resolve(providers), this.injector);
-                return this.vcr.createComponent(componentFactory, undefined, injector);
-            });
-    }
+        let injector: ReflectiveInjector = ReflectiveInjector.fromResolvedProviders(
+            ReflectiveInjector.resolve(providers), this.injector);
+        let componentFactory: ComponentFactory<any> = this.componentResolver.resolveComponentFactory(component);
+        return Promise.resolve(this.vcr.createComponent(componentFactory, undefined, injector));
+    };
 }

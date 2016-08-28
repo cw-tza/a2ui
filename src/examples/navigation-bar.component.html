@@ -1,0 +1,16 @@
+<aside id="sidebar" class="sidebar c-overflow" #navbar>
+    <ul class="main-menu">
+
+        <li *ngFor="let route of routes"
+            class="sub-menu"
+            [class.toggled]="route.toggle"
+            [class.active]="false">
+            <a (click)="route.toggle = !route.toggle"> {{route.data.readable}}</a>
+
+            <ul [@menu]="route.toggle ? 'show' : 'hide'">
+                <li *ngFor="let child of route.children"><a routerLink="{{route.path}}/{{child.path}}">{{child.data.readable}}</a></li>
+            </ul>
+        </li>
+
+    </ul>
+</aside>

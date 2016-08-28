@@ -19,7 +19,6 @@ type ModalBackdrop = "static" | boolean;
 
 @Injectable()
 export class Modal {
-    private rootRef: ViewContainerRef;
 
     constructor(private injector: Injector,
                 private componentResolver: ComponentFactoryResolver,

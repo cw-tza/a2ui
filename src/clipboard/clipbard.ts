@@ -5,6 +5,8 @@ export interface ClipboardResult {
     text?: string;
 }
 
+export type Action = (source: HTMLElement | string) => ClipboardResult;
+
 export function copy (source: HTMLElement | string): ClipboardResult {
     return executeAction(source, "copy");
 }

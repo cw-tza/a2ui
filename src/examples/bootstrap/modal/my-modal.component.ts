@@ -1,4 +1,4 @@
-import {ModalActions} from "../bootstrap/modal/modal";
+import {ModalActions} from "../../../bootstrap/modal/modal";
 import {OpaqueToken, Component, Inject} from "@angular/core";
 
 export const MY_MODAL_DEPENDENCY: OpaqueToken =
@@ -6,7 +6,7 @@ export const MY_MODAL_DEPENDENCY: OpaqueToken =
 
 @Component({
     selector: "my-modal",
-    templateUrl: "src/examples/MyModal.component.html"
+    templateUrl: "src/examples/bootstrap/modal/my-modal.component.html"
 })
 export class MyModalComponent {
     constructor (@Inject(MY_MODAL_DEPENDENCY) public dynamicDependency: any,
