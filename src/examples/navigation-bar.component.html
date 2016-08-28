@@ -2,13 +2,18 @@
     <ul class="main-menu">
 
         <li *ngFor="let route of routes"
-            class="sub-menu"
-            [class.toggled]="route.toggle"
+            [class.sub-menu]="route?.children"
+            [class.toggled]="route.data.toggle"
             [class.active]="false">
-            <a (click)="route.toggle = !route.toggle"> {{route.data.readable}}</a>
 
-            <ul [@menu]="route.toggle ? 'show' : 'hide'">
-                <li *ngFor="let child of route.children"><a routerLink="{{route.path}}/{{child.path}}">{{child.data.readable}}</a></li>
+            <a *ngIf="route?.children" (click)="route.data.toggle = !route.data.toggle"> {{route.data.readable}}</a>
+            <a *ngIf="!route?.children" (click)="route.data.toggle = !route.data.toggle" routerLink="{{route.path}}">
+                {{route.data.readable}}
+            </a>
+
+            <ul [@menu]="route.data.toggle ? 'show' : 'hide'">
+                <li *ngFor="let child of route.children"><a routerLink="{{route.path}}/{{child.path}}">{{child.data.readable}}</a>
+                </li>
             </ul>
         </li>
 
