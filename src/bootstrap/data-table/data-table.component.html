@@ -1,4 +1,4 @@
-<pagination [selectedPageSize]="pageSize" [data]="dataToDisplay" [availablePageSizes]="availablePageSizes">
+<a2-pagination [selectedPageSize]="pageSize" [data]="dataToDisplay" [availablePageSizes]="availablePageSizes">
     <template pageTemplate let-rows="var">
         <table [class]="getTableStyle()">
             <caption *ngIf="header">
@@ -28,4 +28,4 @@
             </tfoot>
         </table>
     </template>
-</pagination>
+</a2-pagination>

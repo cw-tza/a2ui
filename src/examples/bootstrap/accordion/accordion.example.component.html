@@ -12,8 +12,8 @@
         <button (click)="prev();" class="btn btn-default btn-sm m-t-5">Prev</button>
         <button (click)="next();" class="btn btn-default btn-sm m-t-5">Next</button>
 
-        <accordion #acc [closeOther]="closeOthers" [ignoreDisabled]="ignoreDisabled">
-            <accordion-group [opened]="true" header="One">
+        <a2-accordion #acc [closeOther]="closeOthers" [ignoreDisabled]="ignoreDisabled">
+            <a2-accordion-group [opened]="true" header="One">
                 <table>
                     <tr>
                         <th>Firstname</th>
@@ -31,8 +31,8 @@
                         <td>94</td>
                     </tr>
                 </table>
-            </accordion-group>
-            <accordion-group [disabled]="true" header="Two">
+            </a2-accordion-group>
+            <a2-accordion-group [disabled]="true" header="Two">
                 <table>
                     <tr>
                         <th>Firstname</th>
@@ -50,8 +50,8 @@
                         <td>94</td>
                     </tr>
                 </table>
-            </accordion-group>
-            <accordion-group header="Three">
+            </a2-accordion-group>
+            <a2-accordion-group header="Three">
                 <table>
                     <tr>
                         <th>Firstname</th>
@@ -69,8 +69,8 @@
                         <td>94</td>
                     </tr>
                 </table>
-            </accordion-group>
-            <accordion-group *ngIf="groupPresent" header="Four">
+            </a2-accordion-group>
+            <a2-accordion-group *ngIf="groupPresent" header="Four">
                 <table>
                     <tr>
                         <th>Firstname</th>
@@ -88,8 +88,8 @@
                         <td>94</td>
                     </tr>
                 </table>
-            </accordion-group>
-        </accordion>
+            </a2-accordion-group>
+        </a2-accordion>
 
         Accordion navigation state:<br/>
         <ul>

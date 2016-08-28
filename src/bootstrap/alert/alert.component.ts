@@ -1,7 +1,7 @@
 import {Component, Input, Output, OnInit, EventEmitter} from "@angular/core";
 
 @Component({
-    selector: "alert",
+    selector: "a2-alert",
     templateUrl: "src/bootstrap/alert/alert.component.html"
 })
 export class Alert implements OnInit {

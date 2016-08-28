@@ -12,7 +12,7 @@ import {
 } from "@angular/core";
 
 @Component({
-    selector: "pagination",
+    selector: "a2-pagination",
     templateUrl: "src/bootstrap/pagination/pagination.component.html",
 })
 export class Pagination implements OnChanges {

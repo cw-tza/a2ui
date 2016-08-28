@@ -10,7 +10,7 @@ import {Input} from "@angular/core";
 let nextId: number = 0;
 
 @Component({
-    selector: "accordion-group",
+    selector: "a2-accordion-group",
     templateUrl: "src/bootstrap/accordion/accordion-group.component.html",
     animations: [
         trigger("state", [

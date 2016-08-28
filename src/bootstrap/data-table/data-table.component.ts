@@ -3,7 +3,7 @@ import {NgClass} from "@angular/common";
 import {PAGINATION_DIRECTIVES} from "../pagination/pagination.component";
 
 @Component({
-    selector: "data-table",
+    selector: "a2-data-table",
     templateUrl: "src/bootstrap/data-table/data-table.component.html",
     directives: [PAGINATION_DIRECTIVES, NgClass]
 })
@@ -139,7 +139,7 @@ export class DataTable implements AfterContentInit {
 
 
 @Directive({
-    selector: "column",
+    selector: "a2-column",
 })
 export class Column {
     @Input()
@@ -157,13 +157,13 @@ export class Column {
 }
 
 @Component({
-    selector: "header",
+    selector: "a2-header",
     template: "<ng-content></ng-content>"
 })
 export class Header {}
 
 @Component({
-    selector: "footer",
+    selector: "a2-footer",
     template: "<ng-content></ng-content>"
 })
 export class Footer {}

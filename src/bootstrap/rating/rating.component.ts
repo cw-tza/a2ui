@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output, Input, OnInit} from "@angular/core";
 
 @Component({
-    selector: "rating",
+    selector: "a2-rating",
     templateUrl: "src/bootstrap/rating/rating.component.html"})
 export class Rating implements OnInit {
     range: number[] = [];

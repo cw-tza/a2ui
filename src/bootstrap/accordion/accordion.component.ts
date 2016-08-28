@@ -2,7 +2,7 @@ import {ContentChildren, QueryList, forwardRef, AfterContentInit, Input, Output,
 import {AccordionGroup} from "./accordion-group.component";
 
 @Component({
-    selector: "accordion",
+    selector: "a2-accordion",
     templateUrl: "src/bootstrap/accordion/accordion.component.html"
 })
 export class Accordion implements AfterContentInit, OnChanges {

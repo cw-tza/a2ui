@@ -4,11 +4,11 @@
     </div>
 
     <div class="card-body card-padding">
-        <tabs [openedTab]="openedTab" type="tabs">
-            <tab name="a1">
+        <a2-tabs [openedTab]="openedTab" type="tabs">
+            <a2-tab name="a1">
                 <template tabHeader>Tab 1</template>
                 <template tabBody>
-                    <table class="table">
+                    <a2-table class="table">
                         <tr>
                             <th>Firstname</th>
                             <th>Lastname</th>
@@ -24,13 +24,13 @@
                             <td>Jackson</td>
                             <td>94</td>
                         </tr>
-                    </table>
+                    </a2-table>
                 </template>
-            </tab>
-            <tab name="a2" [disabled]="true">
+            </a2-tab>
+            <a2-tab name="a2" [disabled]="true">
                 <template tabHeader>Tab 2</template>
                 <template tabBody>
-                    <table class="table">
+                    <a2-table class="table">
                         <tr>
                             <th>Firstname</th>
                             <th>Lastname</th>
@@ -46,13 +46,13 @@
                             <td>Jackson</td>
                             <td>64</td>
                         </tr>
-                    </table>
+                    </a2-table>
                 </template>
-            </tab>
-            <tab name="a3">
+            </a2-tab>
+            <a2-tab name="a3">
                 <template tabHeader>Tab 3</template>
                 <template tabBody>
-                    <table class="table">
+                    <a2-table class="table">
                         <tr>
                             <th>Firstname</th>
                             <th>Lastname</th>
@@ -68,10 +68,10 @@
                             <td>Jackson</td>
                             <td>34</td>
                         </tr>
-                    </table>
+                    </a2-table>
                 </template>
-            </tab>
-        </tabs>
+            </a2-tab>
+        </a2-tabs>
 
     </div>
 </div>

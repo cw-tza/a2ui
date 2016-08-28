@@ -2,7 +2,7 @@ import {Component, forwardRef, ContentChildren, QueryList, AfterContentInit, Inp
 import {Tab, TabHeader, TabBody} from "./tab.component";
 
 @Component({
-    selector: "tabs",
+    selector: "a2-tabs",
     templateUrl: "src/bootstrap/tabs/tabs.component.html"
 })
 export class Tabs implements AfterContentInit {
@@ -16,7 +16,7 @@ export class Tabs implements AfterContentInit {
 
     @ContentChildren(forwardRef(() => Tab))
     private tabs: QueryList<Tab>;
-    
+
     ngAfterContentInit(): any {
         this.tabChange.emit({prev: undefined, current: this.openedTab});
     }

@@ -3,10 +3,10 @@ import {ContentChild, Directive, forwardRef, TemplateRef, Input} from "@angular/
 let nextId: number = 0;
 
 @Directive({
-    selector: "tab"
+    selector: "a2-tab"
 })
 export class Tab {
-    
+
     @Input()
     name: string = "tab-" + nextId++;
     @Input()
